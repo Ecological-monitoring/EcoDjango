@@ -1,0 +1,7 @@
+<h1>Видалити запис</h1>
+<p>Ви впевнені, що хочете видалити "{{ record.object_name }}"?</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Так, видалити</button>
+    <a href="{% url 'record_list' %}">Скасувати</a>
+</form>

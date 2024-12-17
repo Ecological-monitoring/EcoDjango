@@ -1,4 +1,4 @@
-<h1>Додати новий запис</h1>
+<h1>{{ form.instance.pk|default:"Створити новий запис" }}</h1>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
