@@ -1,0 +1,7 @@
+<h1>Додати новий запис</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зберегти</button>
+</form>
+<a href="{% url 'record_list' %}">Назад до списку</a>

@@ -1,0 +1,7 @@
+<h1>Записи про забруднення</h1>
+<a href="{% url 'record_create' %}">Додати новий запис</a>
+<ul>
+{% for record in records %}
+    <li>{{ record.object_name }} - {{ record.pollutant }} - {{ record.volume }} м³</li>
+{% endfor %}
+</ul>
