@@ -1,10 +1,30 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import PollutionRecord
-from .forms import PollutionRecordForm
-from datetime import datetime, timedelta
 from django.db.models import Q
 from django.contrib import messages
+from datetime import datetime, timedelta
 
+from .models import EmissionRecord, TaxRate, PollutionRecord
+from .forms import EmissionTaxForm, PollutionRecordForm
+
+# Функція для розрахунку податку
+def calculate_tax(request):
+    records = EmissionRecord.objects.all()
+    total_tax = sum(record.tax for record in records)  # Сумарний податок для всіх записів
+    return render(request, 'calculate_tax.html', {'records': records, 'total_tax': total_tax})
+
+# Функція для додавання запису про викиди
+def add_emission_record(request):
+    if request.method == 'POST':
+        form = EmissionTaxForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Запис успішно створено!")
+            return redirect('calculate_tax')
+    else:
+        form = EmissionTaxForm()
+    return render(request, 'add_emission_record.html', {'form': form})
+
+# Відображення списку записів
 def record_list(request):
     query = request.GET.get('q')
     sort_by = request.GET.get('sort', 'date')  # Сортування за замовчуванням - за датою
@@ -23,7 +43,7 @@ def record_list(request):
 
     return render(request, 'record_list.html', {'records': records, 'query': query, 'sort_by': sort_by})
 
-
+# Створення запису
 def record_create(request):
     if request.method == 'POST':
         form = PollutionRecordForm(request.POST)
@@ -35,7 +55,7 @@ def record_create(request):
         form = PollutionRecordForm()
     return render(request, 'record_form.html', {'form': form})
 
-
+# Редагування запису
 def record_edit(request, pk):
     record = get_object_or_404(PollutionRecord, pk=pk)
     if request.method == 'POST':
@@ -48,7 +68,7 @@ def record_edit(request, pk):
         form = PollutionRecordForm(instance=record)
     return render(request, 'record_form.html', {'form': form})
 
-
+# Видалення запису
 def record_delete(request, pk):
     record = get_object_or_404(PollutionRecord, pk=pk)
     if request.method == 'POST':

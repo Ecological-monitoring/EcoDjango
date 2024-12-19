@@ -1,25 +1,51 @@
 from django.db import models
 
-# Таблиці для БД тута
-
-class example(models.Model):
-    name = models.CharField(max_length=50)
-
-
 class Pollutant(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=100, help_text="Назва забруднюючої речовини")
+    description = models.TextField(blank=True, null=True, help_text="Опис забруднюючої речовини")
 
     def __str__(self):
         return self.name
 
-
-
-class PollutionRecord(models.Model):
-    object_name = models.CharField(max_length=100)
-    pollutant = models.CharField(max_length=100)
-    volume = models.FloatField()
-    date = models.DateField(auto_now_add=True)
+class TaxRate(models.Model):
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, help_text="Забруднююча речовина")
+    rate = models.FloatField(help_text="Ставка податку за 1 тонну (грн)")
 
     def __str__(self):
-        return f"{self.object_name} - {self.pollutant}"
+        return f"{self.pollutant.name}: {self.rate} грн/тонна"
+
+class EmissionRecord(models.Model):
+    object_name = models.CharField(max_length=100, help_text="Назва об'єкта")
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, help_text="Забруднююча речовина")
+    volume = models.FloatField(help_text="Об'єм викидів у тоннах")
+    date = models.DateField(help_text="Дата викиду")
+
+    def __str__(self):
+        return f"{self.object_name} - {self.pollutant.name} - {self.date}"
+
+    @property
+    def tax(self):
+        """Обчислення податку на основі ставки"""
+        try:
+            tax_rate = TaxRate.objects.get(pollutant=self.pollutant)
+            return self.volume * tax_rate.rate
+        except TaxRate.DoesNotExist:
+            return 0
+
+class PollutionRecord(models.Model):
+    object_name = models.CharField(max_length=100, help_text="Назва об'єкта")
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, help_text="Забруднююча речовина")
+    volume = models.FloatField(help_text="Об'єм викидів у тоннах")
+    date = models.DateField(help_text="Дата викиду")
+
+    def __str__(self):
+        return f"{self.object_name} - {self.pollutant.name} - {self.date}"
+
+    @property
+    def tax(self):
+        """Обчислення податку на основі ставки"""
+        try:
+            tax_rate = TaxRate.objects.get(pollutant=self.pollutant)
+            return self.volume * tax_rate.rate
+        except TaxRate.DoesNotExist:
+            return 0
