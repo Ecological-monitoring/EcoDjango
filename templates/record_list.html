@@ -1,23 +1,50 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список записів</title>
-    <link rel="stylesheet" href="{% static '/style.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Список записів</h1>
-        <a href="{% url 'record_create' %}" class="btn">Додати новий запис</a>
+
+        <!-- Кнопка для створення запису -->
+        <div style="margin-bottom: 20px; text-align: center;">
+            <a href="{% url 'record_create' %}" class="btn">Додати новий запис</a>
+        </div>
+
+        <!-- Пошук -->
+        <form method="GET" action="" style="margin-bottom: 20px;">
+            <input type="text" name="q" placeholder="Пошук за назвою" value="{{ query|default:'' }}">
+            <button type="submit" class="btn">Шукати</button>
+        </form>
+
+        <!-- Сортування -->
+        <form method="GET" action="" style="margin-bottom: 20px;">
+            <label for="sort">Сортувати за:</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="date" {% if sort_by == 'date' %}selected{% endif %}>Датою</option>
+                <option value="object_name" {% if sort_by == 'object_name' %}selected{% endif %}>Назвою об'єкта</option>
+                <option value="pollutant" {% if sort_by == 'pollutant' %}selected{% endif %}>Забруднювачем</option>
+                <option value="volume" {% if sort_by == 'volume' %}selected{% endif %}>Об'ємом</option>
+            </select>
+        </form>
+
+        <!-- Список записів -->
         <ul>
             {% for record in records %}
                 <li>
-                    {{ record.object_name }} - {{ record.pollutant }} - {{ record.volume }} м³
-                    <a href="{% url 'record_edit' record.id %}" class="btn btn-warning">Редагувати</a>
-                    <a href="{% url 'record_delete' record.id %}" class="btn btn-danger">Видалити</a>
+                    {{ record.date }}: {{ record.object_name }} - {{ record.pollutant }} - {{ record.volume }} м³
+                    <div>
+                        <a href="{% url 'record_edit' record.id %}" class="btn">Редагувати</a>
+                        <a href="{% url 'record_delete' record.id %}" class="btn btn-danger">Видалити</a>
+                    </div>
                 </li>
+            {% empty %}
+                <li>Немає записів</li>
             {% endfor %}
         </ul>
     </div>

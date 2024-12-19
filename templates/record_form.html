@@ -1,7 +1,59 @@
-<h1>{{ form.instance.pk|default:"Створити новий запис" }}</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зберегти</button>
-</form>
-<a href="{% url 'record_list' %}">Назад до списку</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ form.instance.pk|default:"Створити новий запис" }}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Заголовок -->
+        <h1>
+            {% if form.instance.pk %}
+                Редагувати запис
+            {% else %}
+                Створити новий запис
+            {% endif %}
+        </h1>
+
+        <!-- Повідомлення про помилки -->
+        {% if form.errors %}
+            <div class="error-messages">
+                <p>Будь ласка, виправте помилки:</p>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Форма -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn">
+                {% if form.instance.pk %}
+                    Зберегти зміни
+                {% else %}
+                    Додати запис
+                {% endif %}
+            </button>
+        </form>
+
+        <!-- Кнопка повернення -->
+        <div style="margin-top: 20px;">
+            <a href="{% url 'record_list' %}" class="btn">Назад до списку</a>
+        </div>
+    </div>
+</body>
+</html>

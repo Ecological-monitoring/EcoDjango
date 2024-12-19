@@ -1,7 +1,21 @@
-<h1>Видалити запис</h1>
-<p>Ви впевнені, що хочете видалити "{{ record.object_name }}"?</p>
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Так, видалити</button>
-    <a href="{% url 'record_list' %}">Скасувати</a>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видалити запис</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Видалити запис</h1>
+        <p>Ви впевнені, що хочете видалити "{{ record.object_name }}"?</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Так, видалити</button>
+            <a href="{% url 'record_list' %}" class="btn">Скасувати</a>
+        </form>
+    </div>
+</body>
+</html>
