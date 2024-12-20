@@ -5,34 +5,40 @@ from datetime import datetime, timedelta
 from .models import EmissionRecord, TaxRate, Pollutant
 from .forms import EmissionTaxForm
 from django.core.exceptions import ValidationError
+from .forms import TaxCalculationForm
+# Функція для розрахунку податку
+from .models import TaxCalculation
+
+
+
+def tax_results(request):
+    results = TaxCalculation.objects.all()
+    return render(request, 'tax_results.html', {'results': results})
 # Функція для розрахунку податку
 def calculate_tax(request):
-    records = EmissionRecord.objects.all()
-    total_tax = 0
-    for record in records:
-        try:
-            # Знаходження ставки податку для забруднювача
-            tax_rate = TaxRate.objects.get(pollutant__name=record.pollutant)
-            total_tax += record.volume * tax_rate.rate
-        except TaxRate.DoesNotExist:
-            # Якщо ставка податку не знайдена, продовжуємо без обчислення
-            pass
-    return render(request, 'calculate_tax.html', {'records': records, 'total_tax': total_tax})
-
+    if request.method == 'POST':
+        form = TaxCalculationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tax_results')  # Перенаправлення на сторінку результатів
+    else:
+        form = TaxCalculationForm()
+    return render(request, 'calculate_tax.html', {'form': form})
 # Функція для додавання запису про викиди
 def add_emission_record(request):
     if request.method == 'POST':
         form = EmissionTaxForm(request.POST)
         if form.is_valid():
-            record = form.save(commit=False)  # Не зберігати відразу
-            if not record.pollutant:  # Якщо не вказано
-                record.pollutant = "Default Pollutant"
+            record = form.save(commit=False)
+            if not record.pollutant_name:  # Якщо поле пусте
+                record.pollutant_name = "Default Pollutant"
             record.save()
             messages.success(request, "Запис успішно створено!")
             return redirect('calculate_tax')
     else:
         form = EmissionTaxForm()
     return render(request, 'add_emission_record.html', {'form': form})
+
 
 # Відображення списку записів
 def record_list(request):
@@ -48,10 +54,11 @@ def record_list(request):
         records = records.filter(Q(object_name__icontains=query))
 
     # Сортування
-    if sort_by in ['object_name', 'pollutant', 'volume', 'date']:
+    if sort_by in ['object_name', 'pollutant_name', 'emission_volume', 'date']:
         records = records.order_by(sort_by)
 
     return render(request, 'record_list.html', {'records': records, 'query': query, 'sort_by': sort_by})
+
 
 # Створення запису
 def record_create(request):
@@ -64,6 +71,7 @@ def record_create(request):
     else:
         form = EmissionTaxForm()
     return render(request, 'record_form.html', {'form': form})
+
 
 # Редагування запису
 def record_edit(request, pk):
@@ -78,6 +86,7 @@ def record_edit(request, pk):
         form = EmissionTaxForm(instance=record)
     return render(request, 'record_form.html', {'form': form})
 
+
 # Видалення запису
 def record_delete(request, pk):
     record = get_object_or_404(EmissionRecord, pk=pk)
@@ -86,7 +95,3 @@ def record_delete(request, pk):
         messages.success(request, "Запис успішно видалено!")
         return redirect('record_list')
     return render(request, 'record_confirm_delete.html', {'record': record})
-
-def validate_pollutant(value):
-    if not TaxRate.objects.filter(pollutant__name=value).exists():
-        raise ValidationError(f"Забруднювач '{value}' не знайдений.")

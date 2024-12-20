@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Результати розрахунків</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Результати розрахунків</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Об'єкт</th>
+                    <th>Тип податку</th>
+                    <th>Забруднююча речовина</th>
+                    <th>Об'єм</th>
+                    <th>Ставка</th>
+                    <th>Сума податку</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.object_name }}</td>
+                    <td>{{ result.get_tax_type_display }}</td>
+                    <td>{{ result.pollutant_name }}</td>
+                    <td>{{ result.emission_volume }}</td>
+                    <td>{{ result.tax_rate }}</td>
+                    <td>{{ result.tax_sum }}</td>
+                    <td>{{ result.calculation_date }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">Немає результатів</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="total-tax">
+            <p>Загальний податок: <strong>{{ total_tax }} грн</strong></p>
+        </div>
+        <div class="button-container">
+            <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Додати новий розрахунок</a>
+            <a href="/" class="btn btn-secondary">Повернутися на головну</a>
+        </div>
+    </div>
+</body>
+</html>

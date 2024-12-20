@@ -35,12 +35,21 @@ button, .btn {
     border: none;
     border-radius: 5px;
     font-size: 1rem;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
     cursor: pointer;
 }
 
 button:hover, .btn:hover {
     background-color: #2980b9;
+}
+
+button:focus, .btn:focus {
+    outline: 2px solid #2980b9;
+    outline-offset: 2px;
+}
+
+button:active, .btn:active {
+    transform: scale(0.98);
 }
 
 /* Кнопка видалення */
@@ -67,11 +76,17 @@ li {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 li:hover {
     transform: scale(1.02);
+    background-color: #bdc3c7;
+}
+
+li span {
+    flex-grow: 1;
+    margin-right: 10px;
 }
 
 /* Форма */
@@ -92,6 +107,12 @@ form input, form textarea, form select {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
 form button {
@@ -108,9 +129,107 @@ form button {
 }
 
 .success {
-    color: green;
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .error {
-    color: red;
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Адаптивність */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    ul li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    ul li div {
+        margin-top: 10px;
+    }
+
+    button, .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}
+.btn-secondary {
+    background-color: #95a5a6;
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+/* Таблиця */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+table th {
+    background-color: #3498db;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td {
+    text-align: center;
+}
+
+table tfoot td {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    text-align: right;
+}
+
+/* Загальний податок */
+.total-tax {
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 20px 0;
+}
+
+/* Контейнер для кнопок */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }

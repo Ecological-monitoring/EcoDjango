@@ -3,18 +3,18 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Додати запис про викиди</title>
+    <title>Додати запис</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Додати запис про викиди</h1>
+        <h1>Додати запис</h1>
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn">Додати запис</button>
+            <button type="submit" class="btn">Додати</button>
         </form>
-        <a href="{% url 'calculate_tax' %}" class="btn">Повернутися</a>
+        <a href="{% url 'record_list' %}" class="btn">Назад до списку</a>
     </div>
 </body>
 </html>

@@ -4,5 +4,6 @@ from .models import EmissionRecord
 
 @receiver(pre_save, sender=EmissionRecord)
 def set_default_pollutant(sender, instance, **kwargs):
-    if not instance.pollutant:  # Якщо поле не заповнене
-        instance.pollutant = "Default Pollutant"
+    # Перевіряємо, чи поле `pollutant_name` заповнене
+    if not instance.pollutant_name:  # Використовуємо правильну назву поля
+        instance.pollutant_name = "Default Pollutant"
