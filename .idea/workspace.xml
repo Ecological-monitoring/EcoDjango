@@ -5,22 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Lab 1 v1.0">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a/storage_v2/_src_/schema/main.uQUzAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0004_taxrate.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/calculate_tax.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0006_delete_pollutionrecord.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
-    <list id="b50a13c5-023b-4317-b89c-91e8b5a7c3b9" name="Changes by User" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/add_emission_record.html" afterDir="false" />
+    <list id="b50a13c5-023b-4317-b89c-91e8b5a7c3b9" name="Changes by User" comment="Lab 2 v0.1">
+      <change beforePath="$PROJECT_DIR$/eco/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/record_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/record_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,9 +27,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="CSS File" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -135,7 +129,7 @@
       <updated>1734470952315</updated>
       <workItem from="1734470953493" duration="8668000" />
       <workItem from="1734561786136" duration="5951000" />
-      <workItem from="1734628576760" duration="6085000" />
+      <workItem from="1734628576760" duration="11469000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -177,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734568188494</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Lab 2 v0.1">
+      <option name="closed" value="true" />
+      <created>1734643009437</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1734643009437</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,7 +190,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -199,6 +213,7 @@
     <MESSAGE value="Lab 1 v0.1" />
     <MESSAGE value="Changes by User" />
     <MESSAGE value="Lab 1 v0.2" />
+    <MESSAGE value="Lab 2 v0.1" />
     <MESSAGE value="Lab 1 v1.0" />
     <option name="LAST_COMMIT_MESSAGE" value="Lab 1 v1.0" />
   </component>
