@@ -10,10 +10,14 @@ from .forms import TaxCalculationForm
 from .models import TaxCalculation
 
 
-
 def tax_results(request):
-    results = TaxCalculation.objects.all()
-    return render(request, 'tax_results.html', {'results': results})
+    """
+    Відображає результати останнього розрахунку та історію.
+    """
+    results = TaxCalculation.objects.all().order_by('-calculation_date')  # Усі розрахунки
+    latest = results.first()  # Останній розрахунок
+    history = results[1:]  # Уся історія без останнього запису
+    return render(request, 'tax_results.html', {'latest': latest, 'history': history})
 # Функція для розрахунку податку
 def calculate_tax(request):
     if request.method == 'POST':

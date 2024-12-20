@@ -8,7 +8,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Результати розрахунків</h1>
+        <h1>Результати розрахунку</h1>
+        {% if latest %}
         <table>
             <thead>
                 <tr>
@@ -22,26 +23,53 @@
                 </tr>
             </thead>
             <tbody>
-                {% for result in results %}
                 <tr>
-                    <td>{{ result.object_name }}</td>
-                    <td>{{ result.get_tax_type_display }}</td>
-                    <td>{{ result.pollutant_name }}</td>
-                    <td>{{ result.emission_volume }}</td>
-                    <td>{{ result.tax_rate }}</td>
-                    <td>{{ result.tax_sum }}</td>
-                    <td>{{ result.calculation_date }}</td>
+                    <td>{{ latest.object_name }}</td>
+                    <td>{{ latest.get_tax_type_display }}</td>
+                    <td>{{ latest.pollutant_name }}</td>
+                    <td>{{ latest.emission_volume }}</td>
+                    <td>{{ latest.tax_rate }}</td>
+                    <td>{{ latest.tax_sum }}</td>
+                    <td>{{ latest.calculation_date }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <p>Результати розрахунку відсутні</p>
+        {% endif %}
+
+        <h2>Історія розрахунків</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Об'єкт</th>
+                    <th>Тип податку</th>
+                    <th>Забруднююча речовина</th>
+                    <th>Об'єм</th>
+                    <th>Ставка</th>
+                    <th>Сума податку</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in history %}
+                <tr>
+                    <td>{{ record.object_name }}</td>
+                    <td>{{ record.get_tax_type_display }}</td>
+                    <td>{{ record.pollutant_name }}</td>
+                    <td>{{ record.emission_volume }}</td>
+                    <td>{{ record.tax_rate }}</td>
+                    <td>{{ record.tax_sum }}</td>
+                    <td>{{ record.calculation_date }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7">Немає результатів</td>
+                    <td colspan="7">Історія розрахунків відсутня</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <div class="total-tax">
-            <p>Загальний податок: <strong>{{ total_tax }} грн</strong></p>
-        </div>
+
         <div class="button-container">
             <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Додати новий розрахунок</a>
             <a href="/" class="btn btn-secondary">Повернутися на головну</a>
