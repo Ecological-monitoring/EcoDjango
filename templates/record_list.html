@@ -11,11 +11,13 @@
     <div class="container">
         <h1>Список записів</h1>
 
-        <!-- Кнопки для додавання запису, розрахунку податку та перегляду результатів -->
+        <!-- Кнопки для додавання запису, розрахунку податку, перегляду результатів та оцінки ризику -->
         <div style="margin-bottom: 20px; text-align: center;">
             <a href="{% url 'record_create' %}" class="btn btn-success">Додати новий запис</a>
             <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Розрахувати екоподаток</a>
             <a href="{% url 'tax_results' %}" class="btn btn-secondary">Переглянути результати розрахунків</a>
+            <a href="{% url 'assess_risk' %}" class="btn btn-warning">Оцінка ризику</a>
+            <a href="{% url 'risk_results' %}" class="btn btn-info">Переглянути результати оцінки ризику</a>
         </div>
 
         <!-- Пошук -->

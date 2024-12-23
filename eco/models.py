@@ -63,3 +63,18 @@ class EmissionRecord(models.Model):
 
     def __str__(self):
         return f"{self.object_name} - {self.pollutant_name} - {self.date}"
+
+
+from django.db import models
+
+
+class RiskAssessment(models.Model):
+    object_name = models.CharField(max_length=100, help_text="Назва об'єкта")
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, help_text="Забруднююча речовина")
+    concentration = models.FloatField(help_text="Концентрація речовини, мг/м³")
+    risk_level = models.CharField(max_length=50, help_text="Рівень ризику")
+
+    def __str__(self):
+        return f"{self.object_name} ({self.pollutant.name})"
+
+

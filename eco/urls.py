@@ -10,4 +10,6 @@ urlpatterns = [
     path('calculate-tax/', views.calculate_tax, name='calculate_tax'),
     path('add-emission/', views.add_emission_record, name='add_emission_record'),
     path('tax-results/', views.tax_results, name='tax_results'),
+    path('assess-risk/', views.assess_risk, name='assess_risk'),
+    path('risk-results/', views.risk_results, name='risk_results'),
 ]
