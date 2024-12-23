@@ -4,13 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Lab 2 v1.0, need some more patches">
+    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Lab 2 v1.1, history added">
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0009_riskassessment.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/assess_risk.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/risk_result.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
     </list>
-    <list id="b50a13c5-023b-4317-b89c-91e8b5a7c3b9" name="Changes by User" comment="Lab 2 v0.1">
+    <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="">
+      <change beforePath="$PROJECT_DIR$/DjangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/record_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/record_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/tax_results.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tax_results.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +53,14 @@
     &quot;accountId&quot;: &quot;1543de5f-96e8-4848-8769-067b3d156ff3&quot;
   }
 }</component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/eco/forms.py">
+      <ranges>
+        <range start1="3" end1="3" start2="3" end2="4" changelist="3a03b9a8-2771-4940-8c09-bb19c3cb982c" />
+        <range start1="40" end1="40" start2="41" end2="46" changelist="95ad6b23-9386-483a-ba30-038b6b4f45b7" />
+      </ranges>
+    </file>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -126,7 +143,9 @@
       <workItem from="1734470953493" duration="8668000" />
       <workItem from="1734561786136" duration="5951000" />
       <workItem from="1734628576760" duration="11790000" />
-      <workItem from="1734696470048" duration="15409000" />
+      <workItem from="1734696470048" duration="16270000" />
+      <workItem from="1734782394187" duration="1056000" />
+      <workItem from="1734954369883" duration="4261000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -192,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734736151717</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Lab 2 v1.1, history added">
+      <option name="closed" value="true" />
+      <created>1734737434673</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1734737434673</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,6 +257,7 @@
     <MESSAGE value="Lab 1 v1.0" />
     <MESSAGE value="Lab 2 v0.2" />
     <MESSAGE value="Lab 2 v1.0, need some more patches" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lab 2 v1.0, need some more patches" />
+    <MESSAGE value="Lab 2 v1.1, history added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Lab 2 v1.1, history added" />
   </component>
 </project>

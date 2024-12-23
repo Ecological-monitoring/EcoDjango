@@ -1,6 +1,7 @@
 from django import forms
 from .models import EmissionRecord
 from .models import TaxCalculation
+from .models import RiskAssessment
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -38,3 +39,8 @@ class TaxCalculationForm(forms.ModelForm):
     class Meta:
         model = TaxCalculation
         fields = '__all__'
+
+class RiskAssessmentForm(forms.ModelForm):
+    class Meta:
+        model = RiskAssessment
+        fields = ['object_name', 'pollutant', 'concentration']

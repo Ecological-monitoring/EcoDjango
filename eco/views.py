@@ -8,8 +8,9 @@ from django.core.exceptions import ValidationError
 from .forms import TaxCalculationForm
 # Функція для розрахунку податку
 from .models import TaxCalculation
-
-
+from django.shortcuts import render
+from .models import RiskAssessment
+from .forms import RiskAssessmentForm
 def tax_results(request):
     """
     Відображає результати останнього розрахунку та історію.
@@ -99,3 +100,42 @@ def record_delete(request, pk):
         messages.success(request, "Запис успішно видалено!")
         return redirect('record_list')
     return render(request, 'record_confirm_delete.html', {'record': record})
+
+
+def assess_risk(request):
+    if request.method == 'POST':
+        object_name = request.POST.get('object_name')
+        pollutant_id = request.POST.get('pollutant')
+        concentration = float(request.POST.get('concentration'))
+
+        pollutant = Pollutant.objects.get(id=pollutant_id)
+
+        # Логіка для оцінки ризику
+        if concentration > 10:  # Приклад розрахунку рівня ризику
+            risk_level = "High"
+        elif concentration > 5:
+            risk_level = "Medium"
+        else:
+            risk_level = "Low"
+
+        assessment = RiskAssessment.objects.create(
+            object_name=object_name,
+            pollutant=pollutant,
+            concentration=concentration,
+            risk_level=risk_level
+        )
+
+        return redirect('risk_results')
+
+    pollutants = Pollutant.objects.all()
+    return render(request, 'assess_risk.html', {'pollutants': pollutants})
+
+
+def risk_results(request):
+    results = RiskAssessment.objects.all()
+    return render(request, 'risk_results.html', {'results': results})
+
+def calculate_risk_level(concentration):
+    assessments = RiskAssessment.objects.all()
+    return render(request, 'risk_results.html', {'assessments': assessments})
+
