@@ -11,23 +11,24 @@
 <div class="container">
     <h1>Оцінка ризику</h1>
     <form method="POST" action="{% url 'assess_risk' %}">
-        {% csrf_token %}
-        <label for="object_name">Назва об'єкта:</label>
-        <input type="text" id="object_name" name="object_name" required>
+    {% csrf_token %}
+    <label for="object_name">Назва об'єкта:</label>
+    <input type="text" id="object_name" name="object_name" required>
 
-        <label for="pollutant">Забруднююча речовина:</label>
-        <select id="pollutant" name="pollutant" required>
-            <option value="" disabled selected>----------</option>
-            {% for pollutant in pollutants %}
-                <option value="{{ pollutant.id }}">{{ pollutant.name }}</option>
-            {% endfor %}
-        </select>
+    <label for="pollutant">Забруднююча речовина:</label>
+    <select id="pollutant" name="pollutant" required>
+        <option value="" disabled selected>----------</option>
+        {% for pollutant in pollutants %}
+            <option value="{{ pollutant.id }}">{{ pollutant.name }}</option>
+        {% endfor %}
+    </select>
 
-        <label for="concentration">Концентрація речовини (мг/м³):</label>
-        <input type="number" id="concentration" name="concentration" step="0.01" required>
+    <label for="concentration">Концентрація речовини (мг/м³):</label>
+    <input type="number" id="concentration" name="concentration" step="0.01" required>
 
-        <button type="submit" class="btn btn-primary">Оцінити ризик</button>
-    </form>
+    <button type="submit" class="btn btn-primary">Оцінити ризик</button>
+</form>
+
 </div>
 </body>
 </html>

@@ -60,8 +60,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Для глобальних шаблонів
-        'APP_DIRS': True,  # Включає пошук у папках додатків
+        'DIRS': [BASE_DIR / "templates"],  # Загальний каталог шаблонів
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -72,6 +72,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'DjangoProject.wsgi.application'
 

@@ -72,9 +72,19 @@ class RiskAssessment(models.Model):
     object_name = models.CharField(max_length=100, help_text="Назва об'єкта")
     pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, help_text="Забруднююча речовина")
     concentration = models.FloatField(help_text="Концентрація речовини, мг/м³")
-    risk_level = models.CharField(max_length=50, help_text="Рівень ризику")
-
-    def __str__(self):
-        return f"{self.object_name} ({self.pollutant.name})"
+    risk_level = models.CharField(max_length=100, blank=True, help_text="Рівень ризику")
+    date = models.DateField(auto_now_add=True, help_text="Дата оцінки")
 
 
+    def calculate_risk(self):
+        """Обчислення ризику на основі методики"""
+        # Додайте тут логіку оцінки ризику відповідно до методики
+        if self.concentration > 1.0:  # Замініть 1.0 на ваші реальні порогові значення
+            self.risk_level = "Високий"
+        else:
+            self.risk_level = "Низький"
+        return self.risk_level
+
+    def save(self, *args, **kwargs):
+        self.calculate_risk()
+        super().save(*args, **kwargs)

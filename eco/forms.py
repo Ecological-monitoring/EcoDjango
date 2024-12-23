@@ -44,3 +44,8 @@ class RiskAssessmentForm(forms.ModelForm):
     class Meta:
         model = RiskAssessment
         fields = ['object_name', 'pollutant', 'concentration']
+        labels = {
+            'object_name': 'Назва об\'єкта',
+            'pollutant': 'Забруднююча речовина',
+            'concentration': 'Концентрація речовини, мг/м³'
+        }
