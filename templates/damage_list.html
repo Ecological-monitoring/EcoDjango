@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблиця збитків</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Таблиця збитків під час надзвичайних ситуацій</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Підприємство</th>
+                    <th>Забруднююча речовина</th>
+                    <th>Рік</th>
+                    <th>Тип завданої шкоди</th>
+                    <th>Сума збитків</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ record.object_name }}</td>
+                    <td>{{ record.pollutant.name }}</td>
+                    <td>{{ record.year }}</td>
+                    <td>{{ record.damage_type }}</td>
+                    <td>{{ record.damage_amount }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Немає даних</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add_damage_record' %}" class="btn btn-primary">Додати новий запис</a>
+    </div>
+</body>
+</html>

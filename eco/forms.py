@@ -2,6 +2,7 @@ from django import forms
 from .models import EmissionRecord
 from .models import TaxCalculation
 from .models import RiskAssessment
+from .models import DamageRecord
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -49,3 +50,24 @@ class RiskAssessmentForm(forms.ModelForm):
             'pollutant': 'Забруднююча речовина',
             'concentration': 'Концентрація речовини, мг/м³'
         }
+
+
+
+class DamageRecordForm(forms.ModelForm):
+    class Meta:
+        model = DamageRecord
+        fields = ['object_name', 'pollutant', 'year', 'damage_type', 'damage_amount']
+        labels = {
+            'object_name': "Назва об'єкта",
+            'pollutant': "Назва забруднюючої речовини",
+            'year': "Рік",
+            'damage_type': "Тип завданої шкоди",
+            'damage_amount': "Сума збитків"
+        }
+        widgets = {
+            'damage_type': forms.Select(choices=[
+                ('Air', 'Викиди в атмосферу'),
+                ('Water', 'Скиди у водні об’єкти')
+            ])
+        }
+

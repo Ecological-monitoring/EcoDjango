@@ -5,18 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Lab 3 v0.1, buttons added, need some fixes">
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0010_alter_riskassessment_date_and_more.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
-    <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="">
-      <change beforePath="$PROJECT_DIR$/DjangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoProject/settings.py" afterDir="false" />
+    <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="Lab 3 v1.0, Need some fixes with level (medium level), interface (button delete, change)">
       <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/assess_risk.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/assess_risk.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/risk_result.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/risk_results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/record_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/record_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +132,7 @@
       <workItem from="1734628576760" duration="11790000" />
       <workItem from="1734696470048" duration="16270000" />
       <workItem from="1734782394187" duration="1056000" />
-      <workItem from="1734954369883" duration="7770000" />
+      <workItem from="1734954369883" duration="9616000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -224,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734966118584</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Lab 3 v1.0, Need some fixes with level (medium level), interface (button delete, change)">
+      <option name="closed" value="true" />
+      <created>1734992873048</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1734992873048</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,6 +269,7 @@
     <MESSAGE value="Lab 2 v0.2" />
     <MESSAGE value="Lab 2 v1.0, need some more patches" />
     <MESSAGE value="Lab 2 v1.1, history added" />
+    <MESSAGE value="Lab 3 v1.0, Need some fixes with level (medium level), interface (button delete, change)" />
     <MESSAGE value="Lab 3 v0.1, buttons added, need some fixes" />
     <option name="LAST_COMMIT_MESSAGE" value="Lab 3 v0.1, buttons added, need some fixes" />
   </component>

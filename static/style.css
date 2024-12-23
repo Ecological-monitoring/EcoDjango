@@ -144,38 +144,6 @@ form button {
     border-radius: 5px;
 }
 
-/* Адаптивність */
-@media (max-width: 600px) {
-    .container {
-        width: 95%;
-        padding: 15px;
-    }
-
-    form {
-        width: 100%;
-    }
-
-    ul li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    ul li div {
-        margin-top: 10px;
-    }
-
-    button, .btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-    }
-}
-.btn-secondary {
-    background-color: #95a5a6;
-}
-
-.btn-secondary:hover {
-    background-color: #7f8c8d;
-}
 /* Таблиця */
 table {
     width: 100%;
@@ -227,71 +195,36 @@ table tfoot td {
     margin: 20px 0;
 }
 
-/* Контейнер для кнопок */
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-button, select, input {
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #0056b3;
+/* Адаптивність */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    ul li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    ul li div {
+        margin-top: 10px;
+    }
+
+    button, .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 1em;
-    text-align: left;
+.btn-secondary {
+    background-color: #95a5a6;
 }
 
-table thead tr {
-    background-color: #009879;
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-}
-
-table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-}
-
-table tbody tr {
-    border-bottom: 1px solid #ddd;
-}
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+.btn-secondary:hover {
+    background-color: #7f8c8d;
 }

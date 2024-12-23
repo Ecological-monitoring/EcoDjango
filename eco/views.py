@@ -4,6 +4,8 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from .models import EmissionRecord, TaxRate, Pollutant, RiskAssessment, TaxCalculation
 from .forms import EmissionTaxForm, TaxCalculationForm, RiskAssessmentForm
+from .forms import DamageRecordForm
+from .models import DamageRecord
 
 def tax_results(request):
     """
@@ -123,3 +125,17 @@ def calculate_risk(concentration):
         return "Середній"
     else:
         return "Високий"
+
+def damage_list(request):
+    records = DamageRecord.objects.all()
+    return render(request, 'damage_list.html', {'records': records})
+
+def add_damage_record(request):
+    if request.method == 'POST':
+        form = DamageRecordForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('damage_list')
+    else:
+        form = DamageRecordForm()
+    return render(request, 'add_damage_record.html', {'form': form})

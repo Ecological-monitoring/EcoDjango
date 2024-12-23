@@ -88,3 +88,32 @@ class RiskAssessment(models.Model):
     def save(self, *args, **kwargs):
         self.calculate_risk()
         super().save(*args, **kwargs)
+
+
+class DamageRecord(models.Model):
+    object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
+    pollutant = models.ForeignKey('Pollutant', on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    year = models.IntegerField(verbose_name="Рік")
+    damage_type = models.CharField(max_length=255, choices=[
+        ('Air', 'Викиди в атмосферу'),
+        ('Water', 'Скиди у водні об’єкти')
+    ], verbose_name="Тип завданої шкоди")
+    damage_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сума збитків")
+
+    def __str__(self):
+        return f"{self.object_name} ({self.year})"
+
+
+
+class DamageRecord(models.Model):
+    object_name = models.CharField(max_length=200)
+    year = models.IntegerField()
+    damage_type = models.CharField(max_length=50, choices=[
+        ('Екологічні', 'Екологічні'),
+        ('Матеріальні', 'Матеріальні'),
+        ('Соціальні', 'Соціальні')
+    ])
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.object_name} ({self.year})"

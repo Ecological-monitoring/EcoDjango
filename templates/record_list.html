@@ -4,30 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список записів</title>
+    <title>Головна сторінка</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Список записів</h1>
+        <h1>Екологічні інструменти</h1>
 
-        <!-- Кнопки для додавання запису, розрахунку податку, перегляду результатів та оцінки ризику -->
-        <div style="margin-bottom: 20px; text-align: center;">
+        <!-- Головні кнопки для функціоналу -->
+        <div style="text-align: center; margin-bottom: 30px;">
             <a href="{% url 'record_create' %}" class="btn btn-success">Додати новий запис</a>
             <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Розрахувати екоподаток</a>
             <a href="{% url 'tax_results' %}" class="btn btn-secondary">Переглянути результати розрахунків</a>
             <a href="{% url 'assess_risk' %}" class="btn btn-warning">Оцінка ризику</a>
-            <a href="{% url 'risk_results' %}" class="btn btn-info">Переглянути результати оцінки ризику</a>
+            <a href="{% url 'risk_results' %}" class="btn btn-info">Результати оцінки ризику</a>
+            <a href="{% url 'damage_list' %}" class="btn btn-danger">Розрахунок збитків</a>
+            <a href="{% url 'add_damage_record' %}" class="btn btn-success">Додати збитки</a>
         </div>
 
-        <!-- Пошук -->
-        <form method="GET" action="" style="margin-bottom: 20px;">
+        <!-- Пошук записів -->
+        <form method="GET" action="">
             <input type="text" name="q" placeholder="Пошук за назвою" value="{{ query|default:'' }}">
             <button type="submit" class="btn">Шукати</button>
         </form>
 
-        <!-- Сортування -->
-        <form method="GET" action="" style="margin-bottom: 20px;">
+        <!-- Сортування записів -->
+        <form method="GET" action="">
             <label for="sort">Сортувати за:</label>
             <select name="sort" id="sort" onchange="this.form.submit()">
                 <option value="date" {% if sort_by == 'date' %}selected{% endif %}>Датою</option>
@@ -43,7 +45,7 @@
                 <li>
                     {{ record.date }}: {{ record.object_name }} - {{ record.pollutant }} - {{ record.volume }} м³
                     <div>
-                        <a href="{% url 'record_edit' record.id %}" class="btn">Редагувати</a>
+                        <a href="{% url 'record_edit' record.id %}" class="btn btn-primary">Редагувати</a>
                         <a href="{% url 'record_delete' record.id %}" class="btn btn-danger">Видалити</a>
                     </div>
                 </li>

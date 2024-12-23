@@ -12,4 +12,6 @@ urlpatterns = [
     path('tax-results/', views.tax_results, name='tax_results'),
     path('assess-risk/', views.assess_risk, name='assess_risk'),
     path('risk-results/', views.risk_results, name='risk_results'),
+    path('damage-list/', views.damage_list, name='damage_list'),
+    path('add-damage-record/', views.add_damage_record, name='add_damage_record'),
 ]
