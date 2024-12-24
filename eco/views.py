@@ -10,6 +10,8 @@ from datetime import datetime
 from .models import EmergencyEvent
 from .forms import EmergencyEventForm
 from .forms import PollutionRecord
+from .models import Pollutant
+
 def tax_results(request):
     """
     Відображає результати останнього розрахунку та історію.
@@ -45,10 +47,10 @@ def add_emission_record(request):
         form = EmissionTaxForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Запис успішно створено!")
             return redirect('record_list')
     else:
         form = EmissionTaxForm()
+        print(form.fields['pollutant'].queryset)  # Друк усього списку записів
     return render(request, 'add_emission_record.html', {'form': form})
 
 def record_list(request):

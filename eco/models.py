@@ -4,6 +4,9 @@ class Pollutant(models.Model):
     name = models.CharField(max_length=100, help_text="Назва забруднюючої речовини")
     description = models.TextField(blank=True, null=True, help_text="Опис забруднюючої речовини")
 
+    class Meta:
+        db_table = 'eco_pollutant'  # Назва таблиці
+
     def __str__(self):
         return self.name
 
@@ -46,8 +49,8 @@ class PollutionRecord(models.Model):
 
 class TaxCalculation(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant_name = models.CharField(max_length=255, verbose_name="Назва забруднюючої речовини")
-    emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)", default=0)
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина", default=1)
+    emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)")
     tax_rate = models.FloatField(verbose_name="Ставка податку (грн/тонна)")
     tax_sum = models.FloatField(verbose_name="Сума податку (грн)", blank=True, null=True)
     calculation_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата розрахунку")
@@ -58,23 +61,14 @@ class TaxCalculation(models.Model):
             self.tax_sum = self.tax_rate * self.emission_volume
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"{self.object_name} - {self.pollutant_name}"
-
 class EmissionRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина", default=1)  # Поле вже визначене тут
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
     emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)")
     date = models.DateField(verbose_name="Дата викиду")
 
-    @property
-    def pollutant_name(self):
-        """Повертає назву забруднювача для відображення."""
-        return self.pollutant.name
-
     def __str__(self):
         return f"{self.object_name} - {self.pollutant.name} - {self.date}"
-
 
 class RiskAssessment(models.Model):
     object_name = models.CharField(max_length=100, help_text="Назва об'єкта")

@@ -5,6 +5,7 @@ from .models import RiskAssessment
 from .models import DamageRecord
 from .models import EmergencyEvent
 from .models import PollutionRecord
+from .models import Pollutant
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -27,25 +28,15 @@ class EmissionTaxForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['pollutant'].widget = forms.Select(attrs={
-            'placeholder': 'Оберіть забруднюючу речовину'
-        })
-        self.fields['object_name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Введіть назву об\'єкта'
-        })
-        self.fields['emission_volume'].widget = forms.NumberInput(attrs={
-            'placeholder': 'Введіть об\'єм у тоннах'
-        })
-        self.fields['date'].widget = forms.DateInput(attrs={
-            'placeholder': 'Введіть дату (рррр-мм-дд)',
-            'type': 'date'
-        })
+        self.fields['pollutant'].queryset = Pollutant.objects.all()
+        print(self.fields['pollutant'].queryset)  # Друк списку записів для перевірки
 
 
 class TaxCalculationForm(forms.ModelForm):
     class Meta:
         model = TaxCalculation
-        fields = ['object_name', 'pollutant_name', 'emission_volume', 'tax_rate']
+        fields = ['object_name', 'pollutant', 'emission_volume', 'tax_rate']
+
 class RiskAssessmentForm(forms.ModelForm):
     class Meta:
         model = RiskAssessment

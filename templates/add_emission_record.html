@@ -3,18 +3,19 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Додати запис</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Створити новий запис</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Додати запис</h1>
-        <form method="POST">
+        <h1>Створити новий запис</h1>
+        <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn">Додати</button>
+            <button type="submit" class="btn btn-primary">Додати запис</button>
         </form>
-        <a href="{% url 'record_list' %}" class="btn">Назад до списку</a>
+        <a href="{% url 'record_list' %}" class="btn btn-secondary">Назад до списку</a>
     </div>
 </body>
 </html>

@@ -18,5 +18,6 @@ urlpatterns = [
     path('calculate-damage/', views.calculate_damage, name='calculate_damage'),
     path('damage-results/', views.damage_results, name='damage_results'),
     path('add-event/', views.add_event, name='add_event'),  # Додати подію
-    path('view-results/', views.view_results, name='view_results'),  # Результати
+    path('view-results/', views.view_results, name='view_results'),
+
 ]
