@@ -53,19 +53,18 @@ class TaxCalculation(models.Model):
         return f"{self.object_name} - {self.pollutant_name} ({self.tax_type})"
 
 class EmissionRecord(models.Model):
-    """
-    Модель для збереження інформації про викиди забруднюючих речовин.
-    """
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant_name = models.CharField(max_length=255, verbose_name="Забруднююча речовина")
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина", default=1)  # Поле вже визначене тут
     emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)")
     date = models.DateField(verbose_name="Дата викиду")
 
+    @property
+    def pollutant_name(self):
+        """Повертає назву забруднювача для відображення."""
+        return self.pollutant.name
+
     def __str__(self):
-        return f"{self.object_name} - {self.pollutant_name} - {self.date}"
-
-
-from django.db import models
+        return f"{self.object_name} - {self.pollutant.name} - {self.date}"
 
 
 class RiskAssessment(models.Model):
@@ -92,11 +91,12 @@ class RiskAssessment(models.Model):
 
 class DamageRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant = models.ForeignKey('Pollutant', on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
     year = models.IntegerField(verbose_name="Рік")
     damage_type = models.CharField(max_length=255, choices=[
         ('Air', 'Викиди в атмосферу'),
-        ('Water', 'Скиди у водні об’єкти')
+        ('Water', 'Скиди у водні об’єкти'),
+        ('Soil', 'Забруднення ґрунту'),
     ], verbose_name="Тип завданої шкоди")
     damage_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сума збитків")
 
@@ -105,15 +105,12 @@ class DamageRecord(models.Model):
 
 
 
-class DamageRecord(models.Model):
-    object_name = models.CharField(max_length=200)
-    year = models.IntegerField()
-    damage_type = models.CharField(max_length=50, choices=[
-        ('Екологічні', 'Екологічні'),
-        ('Матеріальні', 'Матеріальні'),
-        ('Соціальні', 'Соціальні')
-    ])
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
+class EmergencyEvent(models.Model):
+    name = models.CharField(max_length=200)
+    event_type = models.CharField(max_length=100)
+    date = models.DateField()
+    location = models.CharField(max_length=200)
+    impact = models.TextField()
 
     def __str__(self):
-        return f"{self.object_name} ({self.year})"
+        return self.name

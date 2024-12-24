@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Lab 3 v0.1, buttons added, need some fixes">
+    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Lab 5 v0.1, buttons added, need some fixes">
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0012_alter_damagerecord_damage_type.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0013_emergencyevent.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0014_remove_emissionrecord_pollutant_name_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/damage_records.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/damage_results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/77612e98-a92c-4c7f-89ca-892335aaa21a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/77612e98-a92c-4c7f-89ca-892335aaa21a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
-    <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="Lab 3 v1.0, Need some fixes with level (medium level), interface (button delete, change)">
+    <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="Lab 5, v0.1, need create new html for table">
+      <change beforePath="$PROJECT_DIR$/eco/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
@@ -48,6 +57,9 @@
     &quot;accountId&quot;: &quot;1543de5f-96e8-4848-8769-067b3d156ff3&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/eco/views.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -132,7 +144,8 @@
       <workItem from="1734628576760" duration="11790000" />
       <workItem from="1734696470048" duration="16270000" />
       <workItem from="1734782394187" duration="1056000" />
-      <workItem from="1734954369883" duration="9616000" />
+      <workItem from="1734954369883" duration="9989000" />
+      <workItem from="1735024539401" duration="3542000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -230,7 +243,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734992873048</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Lab 3 v0.1, buttons added, need some fixes">
+      <option name="closed" value="true" />
+      <created>1734995284230</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1734995284230</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,6 +263,13 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="84" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="105" />
+                  <entry key="Table.GitHub.CommitStatus.ColumnIdWidth" value="45" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -270,6 +298,7 @@
     <MESSAGE value="Lab 2 v1.0, need some more patches" />
     <MESSAGE value="Lab 2 v1.1, history added" />
     <MESSAGE value="Lab 3 v1.0, Need some fixes with level (medium level), interface (button delete, change)" />
+    <MESSAGE value="Lab 5, v0.1, need create new html for table" />
     <MESSAGE value="Lab 3 v0.1, buttons added, need some fixes" />
     <option name="LAST_COMMIT_MESSAGE" value="Lab 3 v0.1, buttons added, need some fixes" />
   </component>

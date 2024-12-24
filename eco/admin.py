@@ -12,4 +12,8 @@ class TaxCalculationAdmin(admin.ModelAdmin):
     search_fields = ('object_name', 'pollutant_name')
 @admin.register(EmissionRecord)
 class EmissionRecordAdmin(admin.ModelAdmin):
-    list_display = ('object_name', 'pollutant_name', 'emission_volume', 'date')
+    list_display = ['object_name', 'get_pollutant_name', 'emission_volume', 'date']
+
+    def get_pollutant_name(self, obj):
+        return obj.pollutant.name
+    get_pollutant_name.short_description = 'Назва забруднювача'

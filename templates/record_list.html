@@ -4,54 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Головна сторінка</title>
+    <title>Екологічні інструменти</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+
 </head>
 <body>
     <div class="container">
         <h1>Екологічні інструменти</h1>
 
-        <!-- Головні кнопки для функціоналу -->
-        <div style="text-align: center; margin-bottom: 30px;">
-            <a href="{% url 'record_create' %}" class="btn btn-success">Додати новий запис</a>
-            <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Розрахувати екоподаток</a>
-            <a href="{% url 'tax_results' %}" class="btn btn-secondary">Переглянути результати розрахунків</a>
-            <a href="{% url 'assess_risk' %}" class="btn btn-warning">Оцінка ризику</a>
-            <a href="{% url 'risk_results' %}" class="btn btn-info">Результати оцінки ризику</a>
-            <a href="{% url 'damage_list' %}" class="btn btn-danger">Розрахунок збитків</a>
-            <a href="{% url 'add_damage_record' %}" class="btn btn-success">Додати збитки</a>
+        <!-- Кнопки -->
+        <div class="tools-section">
+            <h2>Основний функціонал</h2>
+            <a href="{% url 'record_create' %}" class="btn btn-uniform">Додати новий запис</a>
+            <a href="{% url 'calculate_tax' %}" class="btn btn-uniform">Розрахувати екоподаток</a>
+            <a href="{% url 'tax_results' %}" class="btn btn-uniform">Переглянути результати розрахунків</a>
+
+            <h2>Оцінка ризику</h2>
+            <a href="{% url 'assess_risk' %}" class="btn btn-uniform">Оцінка ризику</a>
+            <a href="{% url 'risk_results' %}" class="btn btn-uniform">Результати оцінки ризику</a>
+
+            <h2>Розрахунок збитків</h2>
+            <a href="{% url 'damage_list' %}" class="btn btn-uniform">Розрахунок збитків</a>
+            <a href="{% url 'damage_records' %}" class="btn btn-uniform">Введення даних про збитки</a>
+            <a href="{% url 'damage_results' %}" class="btn btn-uniform">Результати розрахунків збитків</a>
         </div>
 
-        <!-- Пошук записів -->
-        <form method="GET" action="">
-            <input type="text" name="q" placeholder="Пошук за назвою" value="{{ query|default:'' }}">
-            <button type="submit" class="btn">Шукати</button>
+        <!-- Пошук -->
+        <form method="GET" action="" class="search-form">
+            <input type="text" name="q" placeholder="Пошук за назвою або забруднювачем" value="{{ query }}">
+            <button type="submit" class="btn btn-uniform">Шукати</button>
         </form>
 
-        <!-- Сортування записів -->
-        <form method="GET" action="">
+        <!-- Сортування -->
+        <form method="GET" action="" class="sort-form">
             <label for="sort">Сортувати за:</label>
             <select name="sort" id="sort" onchange="this.form.submit()">
                 <option value="date" {% if sort_by == 'date' %}selected{% endif %}>Датою</option>
                 <option value="object_name" {% if sort_by == 'object_name' %}selected{% endif %}>Назвою об'єкта</option>
                 <option value="pollutant" {% if sort_by == 'pollutant' %}selected{% endif %}>Забруднювачем</option>
-                <option value="volume" {% if sort_by == 'volume' %}selected{% endif %}>Об'ємом</option>
+                <option value="emission_volume" {% if sort_by == 'emission_volume' %}selected{% endif %}>Об'ємом</option>
             </select>
         </form>
 
         <!-- Список записів -->
-        <ul>
-            {% for record in records %}
-                <li>
-                    {{ record.date }}: {{ record.object_name }} - {{ record.pollutant }} - {{ record.volume }} м³
-                    <div>
-                        <a href="{% url 'record_edit' record.id %}" class="btn btn-primary">Редагувати</a>
-                        <a href="{% url 'record_delete' record.id %}" class="btn btn-danger">Видалити</a>
-                    </div>
-                </li>
-            {% empty %}
-                <li>Немає записів</li>
-            {% endfor %}
+        <ul class="record-list">
+        {% for record in records %}
+            <li>
+                <span><b>Дата:</b> {{ record.date }}</span>
+                <span><b>Об'єкт:</b> {{ record.object_name }}</span>
+                <span><b>Забруднювач:</b> {{ record.pollutant.name }}</span>
+                <span><b>Об'єм:</b> {{ record.emission_volume }} м³</span>
+                <div class="actions">
+                    <a href="{% url 'record_edit' record.id %}" class="btn btn-primary">Редагувати</a>
+                    <a href="{% url 'record_delete' record.id %}" class="btn btn-danger">Видалити</a>
+                </div>
+            </li>
+        {% empty %}
+            <li>Немає записів</li>
+        {% endfor %}
         </ul>
     </div>
 </body>

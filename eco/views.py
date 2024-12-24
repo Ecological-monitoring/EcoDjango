@@ -6,6 +6,9 @@ from .models import EmissionRecord, TaxRate, Pollutant, RiskAssessment, TaxCalcu
 from .forms import EmissionTaxForm, TaxCalculationForm, RiskAssessmentForm
 from .forms import DamageRecordForm
 from .models import DamageRecord
+from datetime import datetime
+from .models import EmergencyEvent
+from .forms import EmergencyEventForm
 
 def tax_results(request):
     """
@@ -30,12 +33,9 @@ def add_emission_record(request):
     if request.method == 'POST':
         form = EmissionTaxForm(request.POST)
         if form.is_valid():
-            record = form.save(commit=False)
-            if not record.pollutant_name:
-                record.pollutant_name = "Default Pollutant"
-            record.save()
+            form.save()
             messages.success(request, "Запис успішно створено!")
-            return redirect('calculate_tax')
+            return redirect('record_list')
     else:
         form = EmissionTaxForm()
     return render(request, 'add_emission_record.html', {'form': form})
@@ -44,16 +44,18 @@ def record_list(request):
     query = request.GET.get('q')
     sort_by = request.GET.get('sort', 'date')
 
-    ten_years_ago = datetime.now().date() - timedelta(days=365 * 10)
-    records = EmissionRecord.objects.filter(date__gte=ten_years_ago)
+    records = EmissionRecord.objects.all()
 
     if query:
-        records = records.filter(Q(object_name__icontains=query))
+        records = records.filter(
+            Q(object_name__icontains=query) | Q(pollutant__name__icontains=query)
+        )
 
-    if sort_by in ['object_name', 'pollutant_name', 'emission_volume', 'date']:
+    if sort_by in ['date', 'object_name', 'pollutant__name', 'emission_volume']:
         records = records.order_by(sort_by)
 
     return render(request, 'record_list.html', {'records': records, 'query': query, 'sort_by': sort_by})
+
 
 def record_create(request):
     if request.method == 'POST':
@@ -139,3 +141,43 @@ def add_damage_record(request):
     else:
         form = DamageRecordForm()
     return render(request, 'add_damage_record.html', {'form': form})
+def damage_records(request):
+    """Відображення сторінки введення даних про збитки."""
+    pollutants = Pollutant.objects.all()
+    current_year = datetime.now().year
+    return render(request, 'damage_records.html', {'pollutants': pollutants, 'current_year': current_year})
+
+def calculate_damage(request):
+    """Обробка форми і збереження даних про збитки."""
+    if request.method == 'POST':
+        form = DamageRecordForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('damage_results')
+    else:
+        form = DamageRecordForm()
+    return render(request, 'damage_records.html', {'form': form})
+
+def damage_results(request):
+    """Відображення результатів розрахунків збитків."""
+    results = DamageRecord.objects.all()
+    return render(request, 'damage_results.html', {'results': results})
+
+
+
+def home(request):
+    return render(request, 'record_list.html')
+
+def add_event(request):
+    if request.method == 'POST':
+        form = EmergencyEventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('view_results')
+    else:
+        form = EmergencyEventForm()
+    return render(request, 'add_damage_record.html', {'form': form})
+
+def view_results(request):
+    events = EmergencyEvent.objects.all()
+    return render(request, 'damage_results.html', {'events': events})

@@ -3,6 +3,7 @@ from .models import EmissionRecord
 from .models import TaxCalculation
 from .models import RiskAssessment
 from .models import DamageRecord
+from .models import EmergencyEvent
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -17,12 +18,12 @@ class PollutionTaxForm(forms.Form):
 class EmissionTaxForm(forms.ModelForm):
     class Meta:
         model = EmissionRecord
-        fields = ['object_name', 'pollutant_name', 'emission_volume', 'date']
+        fields = ['object_name', 'pollutant', 'emission_volume', 'date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['pollutant_name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Введіть забруднюючу речовину'
+        self.fields['pollutant'].widget = forms.Select(attrs={
+            'placeholder': 'Оберіть забруднюючу речовину'
         })
         self.fields['object_name'].widget = forms.TextInput(attrs={
             'placeholder': 'Введіть назву об\'єкта'
@@ -59,10 +60,10 @@ class DamageRecordForm(forms.ModelForm):
         fields = ['object_name', 'pollutant', 'year', 'damage_type', 'damage_amount']
         labels = {
             'object_name': "Назва об'єкта",
-            'pollutant': "Назва забруднюючої речовини",
+            'pollutant': "Забруднююча речовина",
             'year': "Рік",
             'damage_type': "Тип завданої шкоди",
-            'damage_amount': "Сума збитків"
+            'damage_amount': "Сума збитків (грн)"
         }
         widgets = {
             'damage_type': forms.Select(choices=[
@@ -70,4 +71,10 @@ class DamageRecordForm(forms.ModelForm):
                 ('Water', 'Скиди у водні об’єкти')
             ])
         }
+
+class EmergencyEventForm(forms.ModelForm):
+    class Meta:
+        model = EmergencyEvent
+        fields = ['name', 'event_type', 'date', 'location', 'impact']
+
 
