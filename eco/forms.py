@@ -6,6 +6,8 @@ from .models import DamageRecord
 from .models import EmergencyEvent
 from .models import PollutionRecord
 from .models import Pollutant
+from .models import PollutantDetails
+
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -72,4 +74,16 @@ class EmergencyEventForm(forms.ModelForm):
         model = EmergencyEvent
         fields = ['name', 'event_type', 'date', 'location', 'impact']
 
+
+
+
+class PollutantDetailsForm(forms.ModelForm):
+    class Meta:
+        model = PollutantDetails
+        fields = ['name', 'hazard_class', 'mpc', 'rfc', 'sf', 'specific_emissions',  'hazard_coefficient']
+
+class PollutantForm(forms.ModelForm):
+    class Meta:
+        model = Pollutant
+        fields = ['name', 'description']  # Вкажіть усі необхідні поля
 

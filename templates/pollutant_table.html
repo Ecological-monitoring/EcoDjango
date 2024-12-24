@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблиця Забруднюючих Речовин</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Таблиця Забруднюючих Речовин</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th title="Порядковий номер запису">№</th>
+                    <th title="Назва забруднюючої речовини">Назва речовини</th>
+                    <th title="Клас небезпеки речовини (I - IV)">Клас небезпеки</th>
+                    <th title="Гранично допустима концентрація речовини (мг/м³)">ГДК</th>
+                    <th title="Безпечний рівень впливу речовини">RFC</th>
+                    <th title="Фактор канцерогенного потенціалу">SF</th>
+                    <th title="Питомий показник викиду (qi)">SpecificEmissions</th>
+                    <th title="Ставка податку за одиницю обсягу">TaxRate</th>
+                    <th title="Коефіцієнт класу небезпеки (Кнеб)">HazardCoefficient</th>
+                    <th title="Коефіцієнт небезпечності (Кн)">KN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pollutant in pollutants %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ pollutant.name }}</td>
+                        <td>{{ pollutant.hazard_class }}</td>
+                        <td>{{ pollutant.mpc }}</td>
+                        <td>{{ pollutant.rfc }}</td>
+                        <td>{{ pollutant.sf }}</td>
+                        <td>{{ pollutant.specific_emissions }}</td>
+                        <td>{{ pollutant.tax_rate }}</td>
+                        <td>{{ pollutant.hazard_coefficient }}</td>
+                        <td>{{ pollutant.kn }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Додати нову забруднюючу речовину</h2>
+        <a href="{% url 'pollutant_add' %}" class="btn btn-success">Додати речовину</a>
+        <a href="{% url 'record_list' %}" class="btn btn-secondary">Повернутися на головну</a>
+    </div>
+</body>
+</html>

@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.db import models
+
 class Pollutant(models.Model):
     name = models.CharField(max_length=100, help_text="Назва забруднюючої речовини")
     description = models.TextField(blank=True, null=True, help_text="Опис забруднюючої речовини")
@@ -114,6 +116,51 @@ class EmergencyEvent(models.Model):
     date = models.DateField()
     location = models.CharField(max_length=200)
     impact = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
+class PollutantDetails(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Назва речовини")
+    hazard_class = models.CharField(
+        max_length=50,
+        verbose_name="Клас небезпеки",
+        choices=[
+            ('I', 'І клас (надзвичайно небезпечні)'),
+            ('II', 'ІІ клас (високонебезпечні)'),
+            ('III', 'ІІІ клас (помірно небезпечні)'),
+            ('IV', 'IV клас (малонебезпечні)')
+        ],
+        default='IV'  # Значення за замовчуванням
+    )
+    mpc = models.FloatField(verbose_name="ГДК (мг/м³)", null=True, blank=True)
+    rfc = models.FloatField(verbose_name="RFC - безпечний рівень впливу речовини", null=True, blank=True)
+    sf = models.FloatField(verbose_name="SF - фактор канцерогенного потенціалу", null=True, blank=True)
+    specific_emissions = models.FloatField(verbose_name="Питомий показник викиду (qi)", null=True, blank=True)
+    tax_rate = models.FloatField(verbose_name="Ставка податку (Сп)", null=True, blank=True)
+    hazard_coefficient = models.FloatField(verbose_name="Коефіцієнт класу небезпеки (Кнеб)", null=True, blank=True)
+    kn = models.FloatField(verbose_name="Коефіцієнт небезпечності (Кн)", null=True, blank=True)
+
+    def calculate_tax_rate(self):
+        hazard_class_rates = {
+            "I": 1546.22,  # грн/т
+            "II": 56.32,  # грн/т
+            "III": 14.12,  # грн/т
+            "IV": 5.50  # грн/т
+        }
+        return hazard_class_rates.get(self.hazard_class, 0)
+
+    def calculate_kn(self):
+        if self.mpc and self.specific_emissions:
+            return self.mpc / self.specific_emissions
+        return 0
+
+    def save(self, *args, **kwargs):
+        # Автоматично обчислюємо tax_rate та kn перед збереженням
+        self.tax_rate = self.calculate_tax_rate()
+        self.kn = self.calculate_kn()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

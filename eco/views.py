@@ -11,7 +11,9 @@ from .models import EmergencyEvent
 from .forms import EmergencyEventForm
 from .forms import PollutionRecord
 from .models import Pollutant
-
+from .models import PollutantDetails
+from .forms import PollutantDetailsForm
+import logging
 def tax_results(request):
     """
     Відображає результати останнього розрахунку та історію.
@@ -194,3 +196,22 @@ def add_event(request):
 def view_results(request):
     events = EmergencyEvent.objects.all()
     return render(request, 'damage_results.html', {'events': events})
+
+def pollutant_table(request):
+    pollutants = PollutantDetails.objects.all()
+    return render(request, 'pollutant_table.html', {'pollutants': pollutants})
+
+def delete_pollutant(request, pk):
+    pollutant = get_object_or_404(PollutantDetails, pk=pk)
+    pollutant.delete()
+    return redirect('pollutant_table')
+
+def pollutant_add(request):
+    if request.method == 'POST':
+        form = PollutantDetailsForm(request.POST)
+        if form.is_valid():
+            form.save()  # Автоматично обчислить tax_rate та kn
+            return redirect('pollutant_table')  # Повертаємось до таблиці
+    else:
+        form = PollutantDetailsForm()
+    return render(request, 'pollutant_add.html', {'form': form})

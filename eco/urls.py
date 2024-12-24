@@ -1,6 +1,7 @@
 # тут може фронт звертатися
 from django.urls import path
 from . import views
+from .views import pollutant_table
 
 urlpatterns = [
     path('', views.record_list, name='record_list'),
@@ -19,5 +20,8 @@ urlpatterns = [
     path('damage-results/', views.damage_results, name='damage_results'),
     path('add-event/', views.add_event, name='add_event'),  # Додати подію
     path('view-results/', views.view_results, name='view_results'),
+    path('pollutants/', pollutant_table, name='pollutant_table'),
+    path('pollutants/add/', views.pollutant_add, name='pollutant_add'),
+
 
 ]

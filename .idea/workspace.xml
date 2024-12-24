@@ -4,22 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0017_alter_emissionrecord_pollutant.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0018_alter_pollutant_table.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0019_remove_taxcalculation_pollutant_name_and_more.py" afterDir="false" />
+    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.2. Lab 2 need formula, Lab 3-5 need formulas and fixed tables">
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0020_pollutantdetails.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0021_remove_pollutant_description_pollutant_hazard_class_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0022_alter_pollutant_hazard_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0023_remove_pollutant_hazard_class_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0024_remove_pollutantdetails_kn_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0025_pollutantdetails_kn_pollutantdetails_tax_rate_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0026_alter_pollutantdetails_hazard_class.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/pollutant_add.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/pollutant_table.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables">
-      <change beforePath="$PROJECT_DIR$/eco/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eco/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/signals.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/add_emission_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add_emission_record.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/record_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/record_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,7 +267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735055878909</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Full project v1.2. Lab 2 need formula, Lab 3-5 need formulas and fixed tables">
+      <option name="closed" value="true" />
+      <created>1735071945054</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1735071945054</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,6 +326,7 @@
     <MESSAGE value="Full project v1.0. Lab 1 Done" />
     <MESSAGE value="Lab 5, v0.1, need create new html for table" />
     <MESSAGE value="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
+    <MESSAGE value="Full project v1.2. Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
+    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.2. Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
   </component>
 </project>
