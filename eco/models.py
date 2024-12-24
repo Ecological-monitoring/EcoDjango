@@ -25,22 +25,31 @@ class TaxRate(models.Model):
             return 0  # Якщо ставка податку не знайдена, податок дорівнює 0
 
 
-
-class TaxCalculation(models.Model):
-    TAX_TYPES = [
-        ('air_emissions', 'Викиди в атмосферу'),
-        ('water_discharge', 'Скиди у водні об’єкти'),
-        ('waste_disposal', 'Розміщення відходів'),
-        ('radioactive_waste', 'Утворення радіоактивних відходів'),
-        ('temporary_storage', 'Тимчасове зберігання радіоактивних відходів'),
+class PollutionRecord(models.Model):
+    SUBSTANCE_CHOICES = [
+        ('Оксид вуглецю', 'Оксид вуглецю'),
+        ('Речовини у вигляді суспендованих твердих частинок', 'Речовини у вигляді суспендованих твердих частинок'),
+        ('Діоксид азоту', 'Діоксид азоту'),
+        ('Аміак', 'Аміак'),
+        ('Сірки діоксид', 'Сірки діоксид'),
+        ('Метан', 'Метан'),
     ]
 
+    company = models.CharField(max_length=255)  # Назва компанії
+    year = models.IntegerField()  # Рік
+    value = models.FloatField()  # Значення викидів
+    substance = models.CharField(max_length=255, choices=SUBSTANCE_CHOICES)  # Вибір речовини
+
+    def __str__(self):
+        return f"{self.company} ({self.year}) - {self.substance}"
+
+
+class TaxCalculation(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
     pollutant_name = models.CharField(max_length=255, verbose_name="Назва забруднюючої речовини")
-    emission_volume = models.FloatField(verbose_name="Об'єм викидів", default=0)
-    tax_rate = models.FloatField(verbose_name="Ставка податку")
-    tax_sum = models.FloatField(verbose_name="Сума податку", blank=True, null=True)
-    tax_type = models.CharField(max_length=50, choices=TAX_TYPES, verbose_name="Тип податку")
+    emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)", default=0)
+    tax_rate = models.FloatField(verbose_name="Ставка податку (грн/тонна)")
+    tax_sum = models.FloatField(verbose_name="Сума податку (грн)", blank=True, null=True)
     calculation_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата розрахунку")
 
     def save(self, *args, **kwargs):
@@ -50,7 +59,7 @@ class TaxCalculation(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.object_name} - {self.pollutant_name} ({self.tax_type})"
+        return f"{self.object_name} - {self.pollutant_name}"
 
 class EmissionRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")

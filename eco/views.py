@@ -9,7 +9,7 @@ from .models import DamageRecord
 from datetime import datetime
 from .models import EmergencyEvent
 from .forms import EmergencyEventForm
-
+from .forms import PollutionRecord
 def tax_results(request):
     """
     Відображає результати останнього розрахунку та історію.
@@ -19,16 +19,27 @@ def tax_results(request):
     history = results[1:]
     return render(request, 'tax_results.html', {'latest': latest, 'history': history})
 
+
 def calculate_tax(request):
     if request.method == 'POST':
-        form = TaxCalculationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('tax_results')
-    else:
-        form = TaxCalculationForm()
-    return render(request, 'calculate_tax.html', {'form': form})
+        object_name = request.POST.get('object_name')
+        pollutant_name = request.POST.get('pollutant_name')
+        emission_volume = float(request.POST.get('emission_volume', 0))
+        tax_rate = float(request.POST.get('tax_rate', 0))
+        tax_sum = emission_volume * tax_rate
 
+        # Збереження в базу даних
+        TaxCalculation.objects.create(
+            object_name=object_name,
+            pollutant_name=pollutant_name,
+            emission_volume=emission_volume,
+            tax_rate=tax_rate,
+            tax_sum=tax_sum
+        )
+
+        return redirect('tax_results')  # Перехід до сторінки з результатами
+
+    return render(request, 'calculate_tax.html')
 def add_emission_record(request):
     if request.method == 'POST':
         form = EmissionTaxForm(request.POST)

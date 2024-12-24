@@ -17,14 +17,13 @@ h1 {
 /* Контейнер */
 .container {
     width: 95%;
-    max-width: 1800px; /* Розширено для кращого розташування даних */
+    max-width: 1500px; /* Збільшено максимальну ширину */
     margin: 30px auto;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     padding: 25px;
 }
-
 
 /* Кнопки */
 button, .btn {
@@ -80,6 +79,7 @@ li {
     align-items: center;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, background-color 0.2s ease;
+    flex-wrap: wrap; /* Додає можливість переносу */
 }
 
 li:hover {
@@ -88,9 +88,17 @@ li:hover {
 }
 
 li span {
-    flex-grow: 1;
+    flex-basis: 45%; /* Додає ширину для тексту */
     margin-right: 10px;
     color: #34495e;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 /* Форма */
@@ -245,38 +253,27 @@ table tfoot td {
     display: inline-block;
     margin: 8px;
 }
+
 .record-list li {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap; /* Забезпечує, що всі елементи залишаються в одному рядку */
+    align-items: flex-start;
     padding: 15px;
     background: #f9f9f9;
     border: 1px solid #ddd;
     margin-bottom: 12px;
     border-radius: 8px;
-    overflow: hidden; /* Приховує текст, що виходить за межі */
-    white-space: nowrap; /* Текст відображається в один рядок */
-    text-overflow: ellipsis; /* Додає три крапки для тексту, що не вміщується */
+    flex-wrap: wrap;
 }
+
 .record-list li span {
+    flex-basis: calc(50% - 20px);
     margin-right: 15px;
-    flex-grow: 1;
-    text-align: left;
 }
 
 .actions {
     display: flex;
-    gap: 10px; /* Додає відстань між кнопками */
-    justify-content: flex-end; /* Вирівнює кнопки праворуч */
-    align-items: center; /* Вирівнює кнопки по вертикалі */
-}
-/* Кнопки */
-.btn-uniform {
-    background-color: #3498db; /* Уніфікований колір кнопок */
-    color: white;
-}
-
-.btn-uniform:hover {
-    background-color: #2980b9;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
 }

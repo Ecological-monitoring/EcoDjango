@@ -4,6 +4,7 @@ from .models import TaxCalculation
 from .models import RiskAssessment
 from .models import DamageRecord
 from .models import EmergencyEvent
+from .models import PollutionRecord
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -14,6 +15,10 @@ class PollutionTaxForm(forms.Form):
         'placeholder': 'Введіть об\'єм у тоннах'
     }))
 
+class PollutionRecordForm(forms.ModelForm):
+    class Meta:
+        model = PollutionRecord
+        fields = ['company', 'year', 'value', 'substance']
 
 class EmissionTaxForm(forms.ModelForm):
     class Meta:
@@ -40,8 +45,7 @@ class EmissionTaxForm(forms.ModelForm):
 class TaxCalculationForm(forms.ModelForm):
     class Meta:
         model = TaxCalculation
-        fields = '__all__'
-
+        fields = ['object_name', 'pollutant_name', 'emission_volume', 'tax_rate']
 class RiskAssessmentForm(forms.ModelForm):
     class Meta:
         model = RiskAssessment

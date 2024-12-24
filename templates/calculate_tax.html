@@ -5,14 +5,40 @@
     <meta charset="UTF-8">
     <title>Розрахунок податку</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script>
+        function calculateTax() {
+            const emissionVolume = parseFloat(document.getElementById('emission_volume').value) || 0;
+            const taxRate = parseFloat(document.getElementById('tax_rate').value) || 0;
+            const taxSum = emissionVolume * taxRate;
+            document.getElementById('tax_sum').value = taxSum.toFixed(2);
+
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Розрахунок податку</h1>
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn">Розрахувати</button>
+            <label for="object_name">Назва об'єкта:</label>
+            <input type="text" id="object_name" name="object_name" required>
+
+            <label for="pollutant_name">Назва забруднюючої речовини:</label>
+            <input type="text" id="pollutant_name" name="pollutant_name" required>
+
+            <label for="emission_volume">Об'єм викидів (тонн):</label>
+            <input type="number" id="emission_volume" name="emission_volume" step="0.01" onchange="calculateTax()" required>
+
+            <label for="tax_rate">Ставка податку (грн/тонна):</label>
+            <input type="number" id="tax_rate" name="tax_rate" step="0.01" onchange="calculateTax()" required>
+
+            <label for="tax_sum">Сума податку (грн):</label>
+            <input type="number" id="tax_sum" name="tax_sum" readonly>
+
+            <div class="buttons">
+                <button type="submit" class="btn btn-success">Розрахувати</button>
+                <a href="/" class="btn btn-secondary">На головну</a>
+            </div>
         </form>
     </div>
 </body>

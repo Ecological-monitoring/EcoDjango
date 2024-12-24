@@ -4,12 +4,16 @@
 from django.contrib import admin
 from .models import TaxCalculation
 from .models import TaxRate, EmissionRecord
+from .models import PollutionRecord
 
+@admin.register(PollutionRecord)
+class PollutionRecordAdmin(admin.ModelAdmin):
+    list_display = ('company', 'year', 'value', 'substance')
 @admin.register(TaxCalculation)
 class TaxCalculationAdmin(admin.ModelAdmin):
-    list_display = ('object_name', 'pollutant_name', 'tax_type', 'calculation_date', 'tax_sum')
-    list_filter = ('tax_type', 'calculation_date')
+    list_display = ('object_name', 'pollutant_name', 'emission_volume', 'tax_rate', 'tax_sum', 'calculation_date')
     search_fields = ('object_name', 'pollutant_name')
+    list_filter = ('calculation_date',)
 @admin.register(EmissionRecord)
 class EmissionRecordAdmin(admin.ModelAdmin):
     list_display = ['object_name', 'get_pollutant_name', 'emission_volume', 'date']
