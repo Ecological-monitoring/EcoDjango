@@ -3,6 +3,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Таблиця збитків</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
@@ -21,23 +22,24 @@
                 </tr>
             </thead>
             <tbody>
-                {% for record in records %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ record.object_name }}</td>
-                    <td>{{ record.pollutant.name }}</td>
-                    <td>{{ record.year }}</td>
-                    <td>{{ record.damage_type }}</td>
-                    <td>{{ record.damage_amount }}</td>
-                </tr>
+                {% for damage in damages %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ damage.object_name }}</td>
+                        <td>{{ damage.pollutant.name }}</td>
+                        <td>{{ damage.year }}</td>
+                        <td>{{ damage.get_damage_type_display }}</td>
+                        <td>{{ damage.damage_amount }}</td>
+                    </tr>
                 {% empty %}
-                <tr>
-                    <td colspan="6">Немає даних</td>
-                </tr>
+                    <tr>
+                        <td colspan="6">Немає даних</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'add_damage_record' %}" class="btn btn-primary">Додати новий запис</a>
+        <a href="{% url 'add_damage_record' %}" class="btn btn-success">Додати новий запис</a>
+        <a href="{% url 'record_list' %}" class="btn">Назад до списку</a>
     </div>
 </body>
 </html>

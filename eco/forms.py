@@ -54,21 +54,33 @@ class RiskAssessmentForm(forms.ModelForm):
 class DamageRecordForm(forms.ModelForm):
     class Meta:
         model = DamageRecord
-        fields = ['object_name', 'pollutant', 'year', 'damage_type', 'damage_amount']
+        fields = [
+            'object_name',
+            'pollutant',
+            'emission_volume',
+            'region_coefficient',
+            'violation_characteristic',
+            'year',
+            'damage_type'
+        ]
+        widgets = {
+            'object_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Назва об'єкта"}),
+            'pollutant': forms.Select(attrs={'class': 'form-control'}),
+            'emission_volume': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Обсяг викидів'}),
+            'region_coefficient': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Регіональний коефіцієнт'}),
+            'violation_characteristic': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Коефіцієнт порушення'}),
+            'year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Рік'}),
+            'damage_type': forms.Select(attrs={'class': 'form-control'}),
+        }
         labels = {
             'object_name': "Назва об'єкта",
             'pollutant': "Забруднююча речовина",
+            'emission_volume': "Обсяг викидів (М)",
+            'region_coefficient': "Регіональний коефіцієнт (К₃)",
+            'violation_characteristic': "Коефіцієнт порушення (К₂)",
             'year': "Рік",
             'damage_type': "Тип завданої шкоди",
-            'damage_amount': "Сума збитків (грн)"
         }
-        widgets = {
-            'damage_type': forms.Select(choices=[
-                ('Air', 'Викиди в атмосферу'),
-                ('Water', 'Скиди у водні об’єкти')
-            ])
-        }
-
 class EmergencyEventForm(forms.ModelForm):
     class Meta:
         model = EmergencyEvent

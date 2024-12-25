@@ -94,16 +94,41 @@ class RiskAssessment(models.Model):
         super().save(*args, **kwargs)
 
 
+
 class DamageRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    pollutant = models.ForeignKey('Pollutant', on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    emission_volume = models.FloatField(verbose_name="Обсяг викидів, скидів або розміщених відходів (М)", null=False,default=0.0)
+    region_coefficient = models.FloatField(verbose_name="Регіональний коефіцієнт (К₃)", default=1.0)
+    violation_characteristic = models.FloatField(verbose_name="Коефіцієнт характеру порушення (К₂)", default=1.0)
     year = models.IntegerField(verbose_name="Рік")
-    damage_type = models.CharField(max_length=255, choices=[
-        ('Air', 'Викиди в атмосферу'),
-        ('Water', 'Скиди у водні об’єкти'),
-        ('Soil', 'Забруднення ґрунту'),
-    ], verbose_name="Тип завданої шкоди")
-    damage_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сума збитків")
+    damage_type = models.CharField(
+        max_length=255,
+        choices=[
+            ('Air', 'Викиди в атмосферу'),
+            ('Water', 'Скиди у водні об’єкти'),
+            ('Soil', 'Забруднення ґрунту'),
+        ],
+        verbose_name="Тип завданої шкоди"
+    )
+    damage_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сума збитків", null=True, blank=True)
+
+    def calculate_damage(self):
+        """Формула для розрахунку суми збитків."""
+        if self.pollutant and self.emission_volume:
+            self.damage_amount = (
+                self.emission_volume *
+                self.pollutant.tax_rate *
+                self.pollutant.hazard_coefficient *
+                self.violation_characteristic *
+                self.region_coefficient
+            )
+        else:
+            self.damage_amount = 0
+
+    def save(self, *args, **kwargs):
+        self.calculate_damage()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.object_name} ({self.year})"

@@ -144,15 +144,15 @@ def calculate_risk(concentration):
         return "Високий"
 
 def damage_list(request):
-    records = DamageRecord.objects.all()
-    return render(request, 'damage_list.html', {'records': records})
+    damages = DamageRecord.objects.all()
+    return render(request, 'damage_list.html', {'damages': damages})
 
 def add_damage_record(request):
     if request.method == 'POST':
         form = DamageRecordForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('damage_list')
+            return redirect('damage_list')  # Змініть URL на ваш
     else:
         form = DamageRecordForm()
     return render(request, 'add_damage_record.html', {'form': form})
@@ -215,3 +215,5 @@ def pollutant_add(request):
     else:
         form = PollutantDetailsForm()
     return render(request, 'pollutant_add.html', {'form': form})
+
+
