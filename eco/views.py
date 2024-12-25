@@ -13,7 +13,10 @@ from .forms import PollutionRecord
 from .models import Pollutant
 from .models import PollutantDetails
 from .forms import PollutantDetailsForm
+from .models import EnvironmentalDamage
+from .forms import EnvironmentalDamageForm
 import logging
+
 def tax_results(request):
     """
     Відображає результати останнього розрахунку та історію.
@@ -160,25 +163,21 @@ def damage_records(request):
     """Відображення сторінки введення даних про збитки."""
     pollutants = Pollutant.objects.all()
     current_year = datetime.now().year
-    return render(request, 'damage_records.html', {'pollutants': pollutants, 'current_year': current_year})
+    return render(request, 'damage_calculations.html', {'pollutants': pollutants, 'current_year': current_year})
 
-def calculate_damage(request):
-    """Обробка форми і збереження даних про збитки."""
+def damage_calculations(request):
     if request.method == 'POST':
-        form = DamageRecordForm(request.POST)
+        form = EnvironmentalDamageForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('damage_results')
     else:
-        form = DamageRecordForm()
-    return render(request, 'damage_records.html', {'form': form})
+        form = EnvironmentalDamageForm()
+    return render(request, 'damage_calculations.html', {'form': form})
 
 def damage_results(request):
-    """Відображення результатів розрахунків збитків."""
-    results = DamageRecord.objects.all()
-    return render(request, 'damage_results.html', {'results': results})
-
-
+    records = EnvironmentalDamage.objects.all()
+    return render(request, 'damage_results.html', {'records': records})
 
 def home(request):
     return render(request, 'record_list.html')
@@ -199,7 +198,8 @@ def view_results(request):
 
 def pollutant_table(request):
     pollutants = PollutantDetails.objects.all()
-    return render(request, 'pollutant_table.html', {'pollutants': pollutants})
+    total_tax = sum([p.calculate_pollution_tax() for p in pollutants])
+    return render(request, 'pollutant_table.html', {'pollutants': pollutants, 'total_tax': total_tax})
 
 def delete_pollutant(request, pk):
     pollutant = get_object_or_404(PollutantDetails, pk=pk)

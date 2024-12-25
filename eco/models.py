@@ -97,8 +97,8 @@ class RiskAssessment(models.Model):
 
 class DamageRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant = models.ForeignKey('Pollutant', on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
-    emission_volume = models.FloatField(verbose_name="Обсяг викидів, скидів або розміщених відходів (М)", null=False,default=0.0)
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    emission_volume = models.FloatField(verbose_name="Обсяг викидів, скидів або розміщених відходів (М)", null=False, default=0.0)
     region_coefficient = models.FloatField(verbose_name="Регіональний коефіцієнт (К₃)", default=1.0)
     violation_characteristic = models.FloatField(verbose_name="Коефіцієнт характеру порушення (К₂)", default=1.0)
     year = models.IntegerField(verbose_name="Рік")
@@ -114,17 +114,31 @@ class DamageRecord(models.Model):
     damage_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сума збитків", null=True, blank=True)
 
     def calculate_damage(self):
-        """Формула для розрахунку суми збитків."""
-        if self.pollutant and self.emission_volume:
-            self.damage_amount = (
-                self.emission_volume *
-                self.pollutant.tax_rate *
-                self.pollutant.hazard_coefficient *
-                self.violation_characteristic *
-                self.region_coefficient
-            )
-        else:
+        if not self.pollutant or not self.emission_volume:
             self.damage_amount = 0
+            return
+
+        base_damage = (
+            self.emission_volume *
+            self.pollutant.tax_rate *
+            self.pollutant.hazard_coefficient *
+            self.violation_characteristic *
+            self.region_coefficient
+        )
+
+        if self.damage_type == 'Air':
+            # Додаткові розрахунки для викидів в атмосферу (якщо потрібні)
+            self.damage_amount = base_damage
+        elif self.damage_type == 'Water':
+            # Додаткові коефіцієнти для водних об’єктів
+            water_coefficient = 1.5  # Приклад значення
+            self.damage_amount = base_damage * water_coefficient
+        elif self.damage_type == 'Soil':
+            # Додаткові коефіцієнти для ґрунту
+            soil_coefficient = 1.2  # Приклад значення
+            self.damage_amount = base_damage * soil_coefficient
+        else:
+            self.damage_amount = base_damage
 
     def save(self, *args, **kwargs):
         self.calculate_damage()
@@ -132,6 +146,22 @@ class DamageRecord(models.Model):
 
     def __str__(self):
         return f"{self.object_name} ({self.year})"
+
+# Додаткова функція для розрахунку сумарного збитку
+def calculate_total_damage():
+    total_damage = 0
+    records = DamageRecord.objects.all()
+    for record in records:
+        total_damage += float(record.damage_amount or 0)
+    return total_damage
+
+# Додаткова функція для розрахунку сумарного збитку
+def calculate_total_damage():
+    total_damage = 0
+    records = DamageRecord.objects.all()
+    for record in records:
+        total_damage += float(record.damage_amount or 0)
+    return total_damage
 
 
 
@@ -169,10 +199,10 @@ class PollutantDetails(models.Model):
 
     def calculate_tax_rate(self):
         hazard_class_rates = {
-            "I": 1546.22,  # грн/т
-            "II": 56.32,  # грн/т
-            "III": 14.12,  # грн/т
-            "IV": 5.50  # грн/т
+            "I": 18413.24,  # грн/т
+            "II": 4216.92,   # грн/т
+            "III": 628.32,  # грн/т
+            "IV": 145.50     # грн/т
         }
         return hazard_class_rates.get(self.hazard_class, 0)
 
@@ -181,11 +211,117 @@ class PollutantDetails(models.Model):
             return self.mpc / self.specific_emissions
         return 0
 
+    def calculate_hazard_coefficient(self):
+        hazard_coefficients = {
+            "I": 1.0,
+            "II": 0.8,
+            "III": 0.5,
+            "IV": 0.2
+        }
+        return hazard_coefficients.get(self.hazard_class, 0)
+
+    def calculate_pollution_tax(self):
+        # Формула: Пвс = qi * Сп * Кнеб * Кн
+        if self.specific_emissions and self.tax_rate and self.hazard_coefficient and self.kn:
+            return self.specific_emissions * self.tax_rate * self.hazard_coefficient * self.kn
+        return 0
+
     def save(self, *args, **kwargs):
-        # Автоматично обчислюємо tax_rate та kn перед збереженням
+        # Автоматично обчислюємо tax_rate, kn та hazard_coefficient перед збереженням
         self.tax_rate = self.calculate_tax_rate()
         self.kn = self.calculate_kn()
+        self.hazard_coefficient = self.calculate_hazard_coefficient()
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+# Додатковий функціонал для підрахунку загального податку для всіх речовин
+def calculate_total_tax():
+    total_tax = 0
+    pollutants = PollutantDetails.objects.all()
+    for pollutant in pollutants:
+        total_tax += pollutant.calculate_pollution_tax()
+    return total_tax
+
+
+
+class EnvironmentalDamage(models.Model):
+    TAX_TYPES = [
+        ('land_pollution', 'Забруднення землі'),
+        ('water_pollution', 'Забруднення води'),
+        ('air_pollution', 'Забруднення повітря'),
+        ('human_health', 'Втрати життя та здоров’я населення'),
+        ('infrastructure_damage', 'Руйнування основних фондів'),
+    ]
+
+    object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
+    tax_type = models.CharField(max_length=50, choices=TAX_TYPES, verbose_name="Тип збитків")
+    pollutant = models.ForeignKey('Pollutant', on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    report_year = models.IntegerField(verbose_name="Рік звітності")
+    emission_volume = models.FloatField(verbose_name="Об'єм викидів (т/рік)", blank=True, null=True)
+    mass_flow_rate = models.FloatField(verbose_name="Масова витрата (г/с)", blank=True, null=True)
+    concentration = models.FloatField(verbose_name="Концентрація сполук у повітрі (мг/м³)", blank=True, null=True)
+    area = models.FloatField(verbose_name="Площа впливу (м²)", blank=True, null=True)
+    human_losses = models.FloatField(verbose_name="Втрати трудових ресурсів", blank=True, null=True)
+    infrastructure_losses = models.FloatField(verbose_name="Руйнування основних фондів", blank=True, null=True)
+    damage_sum = models.FloatField(verbose_name="Сума збитків (грн)", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.tax_type == 'land_pollution':
+            self.damage_sum = self.calculate_land_pollution_damage()
+        elif self.tax_type == 'water_pollution':
+            self.damage_sum = self.calculate_water_pollution_damage()
+        elif self.tax_type == 'air_pollution':
+            self.damage_sum = self.calculate_air_pollution_damage()
+        elif self.tax_type == 'human_health':
+            self.damage_sum = self.calculate_human_health_damage()
+        elif self.tax_type == 'infrastructure_damage':
+            self.damage_sum = self.calculate_infrastructure_damage()
+
+        super().save(*args, **kwargs)
+
+    def calculate_land_pollution_damage(self):
+        # Формула для забруднення землі
+        Yn = 1.0  # коефіцієнт екологічної небезпеки
+        n = 1.0   # кількість забруднювачів
+        M = self.emission_volume or 0
+        L = 1.0   # відносна природна захищеність
+        return Yn * n * M * L
+
+    def calculate_water_pollution_damage(self):
+        # Формула для водних ресурсів
+        S = self.area or 0
+        H = 1.0   # глибина впливу
+        P = self.mass_flow_rate or 0
+        R = 1.0   # коефіцієнт ризику
+        V = 1.0   # швидкість розповсюдження
+        K1 = 1.0  # коефіцієнт впливу
+        K2 = 1.0  # коефіцієнт відновлення
+        return (S * H * P * (R / V) * K1 * (10 ** -6)) / (100 * K2)
+
+    def calculate_air_pollution_damage(self):
+        # Формула для забруднення повітря
+        M = self.mass_flow_rate or 0
+        C = self.concentration or 0
+        return M * C
+
+    def calculate_human_health_damage(self):
+        # Формула для втрат життя та здоров'я
+        S_vtrr = 100000  # втрати трудових ресурсів
+        S_vdp = 50000    # виплати на поховання
+        S_vvtg = 200000  # виплати пенсій
+        return S_vtrr + S_vdp + S_vvtg
+
+    def calculate_infrastructure_damage(self):
+        # Формула для руйнування інфраструктури
+        Fv = 500000  # основні фонди
+        Fg = 300000  # будівлі
+        Pr = 200000  # обладнання
+        Prs = 100000 # склади
+        Sn = 150000  # техніка
+        Mdg = 250000 # матеріали
+        return Fv + Fg + Pr + Prs + Sn + Mdg
+
+    def __str__(self):
+        return f"{self.object_name} ({self.get_tax_type_display()})"

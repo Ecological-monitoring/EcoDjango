@@ -7,7 +7,7 @@ from .models import TaxRate, EmissionRecord
 from .models import PollutionRecord
 from .models import Pollutant
 from .models import DamageRecord
-
+from .models import EnvironmentalDamage
 
 admin.site.register(Pollutant)
 @admin.register(PollutionRecord)
@@ -36,3 +36,7 @@ class DamageRecordAdmin(admin.ModelAdmin):
     list_display = ('object_name', 'pollutant', 'emission_volume', 'damage_type', 'year', 'damage_amount')
     search_fields = ('object_name', 'pollutant__name', 'year')
     list_filter = ('damage_type', 'year')
+
+@admin.register(EnvironmentalDamage)
+class EnvironmentalDamageAdmin(admin.ModelAdmin):
+    list_display = ('object_name', 'tax_type', 'damage_sum', 'report_year')

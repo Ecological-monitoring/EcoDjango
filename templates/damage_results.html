@@ -1,30 +1,54 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результати</title>
+    <title>Результати розрахунків</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <h1>Результати</h1>
-    <table>
-        <tr>
-            <th>Назва</th>
-            <th>Тип</th>
-            <th>Дата</th>
-            <th>Місце</th>
-            <th>Вплив</th>
-        </tr>
-        {% for event in events %}
-        <tr>
-            <td>{{ event.name }}</td>
-            <td>{{ event.event_type }}</td>
-            <td>{{ event.date }}</td>
-            <td>{{ event.location }}</td>
-            <td>{{ event.impact }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <h1>Результати розрахунків</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Назва об'єкта</th>
+                    <th>Тип збитків</th>
+                    <th>Назва забруднюючої речовини</th>
+                    <th>Рік звітності</th>
+                    <th>Об'єм викидів (т/рік)</th>
+                    <th>Масова витрата (г/с)</th>
+                    <th>Концентрація (мг/м³)</th>
+                    <th>HQ</th>
+                    <th>CR</th>
+                    <th>Ставка податку (грн/т)</th>
+                    <th>Сума податку (грн)</th>
+                    <th>Сума збитків (грн)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.object_name }}</td>
+                    <td>{{ record.get_tax_type_display }}</td>
+                    <td>{{ record.pollutant }}</td>
+                    <td>{{ record.report_year }}</td>
+                    <td>{{ record.emission_volume }}</td>
+                    <td>{{ record.mass_flow_rate }}</td>
+                    <td>{{ record.concentration }}</td>
+                    <td>{{ record.hq_coefficient }}</td>
+                    <td>{{ record.cr_coefficient }}</td>
+                    <td>{{ record.tax_rate }}</td>
+                    <td>{{ record.tax_sum }}</td>
+                    <td>{{ record.damage_sum }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="12">Немає даних</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

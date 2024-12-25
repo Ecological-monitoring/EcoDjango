@@ -4,20 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.3. Lab 4, 5 need formulas and new tables">
+    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs">
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0028_environmentaldamage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0029_remove_environmentaldamage_pollutant_name_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eco/migrations/0030_remove_environmentaldamage_cr_coefficient_and_more.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/damage_records.html" beforeDir="false" />
     </list>
-    <list id="3a03b9a8-2771-4940-8c09-bb19c3cb982c" name="Changes by User" comment="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables">
+    <list id="0eceb685-e6bb-4206-a95e-eb0a8a318db1" name="Changes by User" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/damage_calculations.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/add_damage_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add_damage_record.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/calculate_tax.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/damage_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/damage_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/tax_results.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/damage_results.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/damage_results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pollutant_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pollutant_table.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/record_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/record_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +145,7 @@
       <workItem from="1734782394187" duration="1056000" />
       <workItem from="1734954369883" duration="9989000" />
       <workItem from="1735024539401" duration="3542000" />
+      <workItem from="1735110771633" duration="6960000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -277,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735080415633</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs">
+      <option name="closed" value="true" />
+      <created>1735085719407</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1735085719407</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,8 +342,9 @@
     <MESSAGE value="Full project v1.0. Lab 1 Done" />
     <MESSAGE value="Lab 5, v0.1, need create new html for table" />
     <MESSAGE value="Full project v1.2. Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
-    <MESSAGE value="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
     <MESSAGE value="Full project v1.3. Lab 4, 5 need formulas and new tables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.3. Lab 4, 5 need formulas and new tables" />
+    <MESSAGE value="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
+    <MESSAGE value="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs" />
   </component>
 </project>

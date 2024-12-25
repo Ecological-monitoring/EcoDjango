@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Екологічні інструменти</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
-
 </head>
 <body>
     <div class="container">
@@ -22,8 +21,10 @@
 
             <h2>Розрахунок збитків</h2>
             <a href="{% url 'damage_list' %}" class="btn btn-uniform">Розрахунок збитків</a>
-            <a href="{% url 'damage_records' %}" class="btn btn-uniform">Введення даних про збитки</a>
-            <a href="{% url 'damage_results' %}" class="btn btn-uniform">Результати розрахунків збитків</a>
+
+            <h2>Розрахунок шкоди</h2>
+            <!-- Нова кнопка -->
+            <a href="{% url 'damage_calculations' %}" class="btn btn-uniform">Розрахунок шкоди</a>
         </div>
 
         <!-- Пошук -->

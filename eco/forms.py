@@ -7,7 +7,7 @@ from .models import EmergencyEvent
 from .models import PollutionRecord
 from .models import Pollutant
 from .models import PollutantDetails
-
+from .models import EnvironmentalDamage
 
 class PollutionTaxForm(forms.Form):
     object_name = forms.CharField(max_length=100, label="Назва об'єкта")
@@ -99,3 +99,17 @@ class PollutantForm(forms.ModelForm):
         model = Pollutant
         fields = ['name', 'description']  # Вкажіть усі необхідні поля
 
+
+from django import forms
+from .models import EnvironmentalDamage
+
+class EnvironmentalDamageForm(forms.ModelForm):
+    class Meta:
+        model = EnvironmentalDamage
+        exclude = ['tax_sum', 'damage_sum']  # Виключаємо автоматично розраховані поля
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Додаємо стиль чи атрибути до полів (за бажанням)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
