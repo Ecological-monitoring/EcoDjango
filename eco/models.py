@@ -1,4 +1,4 @@
-from django.db import models
+
 
 from django.db import models
 
@@ -11,24 +11,6 @@ class Pollutant(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class TaxRate(models.Model):
-    pollutant = models.CharField(max_length=255, verbose_name="Забруднююча речовина")
-    rate = models.FloatField(verbose_name="Ставка податку (грн за тонну)")
-
-    def __str__(self):
-        return f"{self.pollutant}: {self.rate} грн/тонна"
-
-    @property
-    def tax(self):
-        """Обчислення податку на основі ставки податку для забруднювача."""
-        try:
-            tax_rate = TaxRate.objects.get(pollutant__name=self.pollutant_name)
-            return self.emission_volume * tax_rate.rate
-        except TaxRate.DoesNotExist:
-            return 0  # Якщо ставка податку не знайдена, податок дорівнює 0
-
 
 class PollutionRecord(models.Model):
     SUBSTANCE_CHOICES = [
@@ -49,19 +31,96 @@ class PollutionRecord(models.Model):
         return f"{self.company} ({self.year}) - {self.substance}"
 
 
+
+class TaxRate(models.Model):
+    pollutant = models.CharField(max_length=255, verbose_name="Забруднююча речовина")
+    rate = models.FloatField(verbose_name="Ставка податку (грн за тонну)")
+
+    def __str__(self):
+        return f"{self.pollutant}: {self.rate} грн/тонна"
+
+
+
+
+
 class TaxCalculation(models.Model):
+    TAX_TYPES = [
+        ('air', 'За викиди в атмосферне повітря'),
+        ('water', 'За скиди у водні об’єкти'),
+        ('waste', 'За розміщення відходів'),
+        ('radioactive', 'За утворення радіоактивних відходів'),
+        ('temporary', 'За тимчасове зберігання радіоактивних відходів')
+    ]
+
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
-    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина", default=1)
-    emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)")
-    tax_rate = models.FloatField(verbose_name="Ставка податку (грн/тонна)")
+    pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
+    emission_volume = models.FloatField(verbose_name="Об'єм викидів (тонн)", blank=True, null=True)
+    tax_rate = models.FloatField(verbose_name="Ставка податку (грн/тонна)", blank=True, null=True)
+    tax_type = models.CharField(
+        max_length=50,
+        choices=TAX_TYPES,
+        verbose_name="Тип податку",
+        default='air'
+    )
+
     tax_sum = models.FloatField(verbose_name="Сума податку (грн)", blank=True, null=True)
     calculation_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата розрахунку")
 
+    @staticmethod
+    def calculate_air_tax(emissions):
+        return sum(volume * rate for volume, rate in emissions)
+
+    @staticmethod
+    def calculate_water_tax(emissions, k_os=1):
+        return sum(volume * rate * k_os for volume, rate in emissions)
+
+    @staticmethod
+    def calculate_waste_tax(emissions, k_t=1, k_o=1):
+        return sum(rate * volume * k_t * k_o for volume, rate in emissions)
+
+    @staticmethod
+    def calculate_radioactive_waste_tax(On, N, coefficients):
+        part1 = On * N
+        part2 = coefficients['r_ns'] * coefficients['S1_ns'] * coefficients['V1_ns'] + \
+                coefficients['r_v'] * coefficients['S1_v'] * coefficients['V1_v']
+        part3 = (1 / 32) * (coefficients['r_ns'] * coefficients['S2_ns'] * coefficients['V2_ns'] + \
+                            coefficients['r_v'] * coefficients['S2_v'] * coefficients['V2_v'])
+        return part1 + part2 + part3
+
+    @staticmethod
+    def calculate_temporary_storage_tax(N, V, T):
+        return N * V * T
+
     def save(self, *args, **kwargs):
-        """Автоматичне обчислення суми податку перед збереженням."""
-        if self.tax_rate and self.emission_volume:
-            self.tax_sum = self.tax_rate * self.emission_volume
+        if self.tax_type == 'air' and self.emission_volume and self.tax_rate:
+            self.tax_sum = self.calculate_air_tax([(self.emission_volume, self.tax_rate)])
+        elif self.tax_type == 'water' and self.emission_volume and self.tax_rate:
+            self.tax_sum = self.calculate_water_tax([(self.emission_volume, self.tax_rate)], k_os=1.5)
+        elif self.tax_type == 'waste' and self.emission_volume and self.tax_rate:
+            self.tax_sum = self.calculate_waste_tax([(self.emission_volume, self.tax_rate)], k_t=1.2, k_o=3)
+        elif self.tax_type == 'radioactive':
+            coefficients = {
+                'r_ns': 0.8,
+                'S1_ns': 500,
+                'V1_ns': 10,
+                'r_v': 1.2,
+                'S1_v': 700,
+                'V1_v': 5,
+                'S2_ns': 300,
+                'V2_ns': 20,
+                'S2_v': 600,
+                'V2_v': 8
+            }
+            self.tax_sum = self.calculate_radioactive_waste_tax(self.emission_volume, self.tax_rate, coefficients)
+        elif self.tax_type == 'temporary':
+            self.tax_sum = self.calculate_temporary_storage_tax(self.tax_rate, self.emission_volume, T=3)
+
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.object_name} ({self.get_tax_type_display()})"
+
+
 
 class EmissionRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
@@ -197,6 +256,8 @@ class PollutantDetails(models.Model):
     hazard_coefficient = models.FloatField(verbose_name="Коефіцієнт класу небезпеки (Кнеб)", null=True, blank=True)
     kn = models.FloatField(verbose_name="Коефіцієнт небезпечності (Кн)", null=True, blank=True)
 
+
+    # Оцей метод прибрати, він не правильний, треба формулами
     def calculate_tax_rate(self):
         hazard_class_rates = {
             "I": 18413.24,  # грн/т

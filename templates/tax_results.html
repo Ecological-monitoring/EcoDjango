@@ -12,27 +12,29 @@
         <table>
             <thead>
                 <tr>
-                    <th>Об'єкт</th>
+                    <th>Назва об'єкта</th>
                     <th>Забруднююча речовина</th>
-                    <th>Об'єм (тонн)</th>
-                    <th>Ставка (грн/тонна)</th>
+                    <th>Об'єм викидів (тонн)</th>
+                    <th>Ставка податку (грн/тонна)</th>
+                    <th>Тип податку</th>
                     <th>Сума податку (грн)</th>
-                    <th>Дата</th>
+                    <th>Дата розрахунку</th>
                 </tr>
             </thead>
             <tbody>
-                {% for record in history %}
+                {% for record in calculations %}
                 <tr>
                     <td>{{ record.object_name }}</td>
-                    <td>{{ record.pollutant_name }}</td>
+                    <td>{{ record.pollutant.name }}</td>
                     <td>{{ record.emission_volume }}</td>
                     <td>{{ record.tax_rate }}</td>
+                    <td>{{ record.get_tax_type_display }}</td>
                     <td>{{ record.tax_sum }}</td>
-                    <td>{{ record.calculation_date }}</td>
+                    <td>{{ record.calculation_date|date:"d.m.Y H:i" }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6">Немає записів</td>
+                    <td colspan="7">Немає записів</td>
                 </tr>
                 {% endfor %}
             </tbody>

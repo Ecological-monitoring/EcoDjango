@@ -34,10 +34,25 @@ class EmissionTaxForm(forms.ModelForm):
         print(self.fields['pollutant'].queryset)  # Друк списку записів для перевірки
 
 
+
 class TaxCalculationForm(forms.ModelForm):
     class Meta:
         model = TaxCalculation
-        fields = ['object_name', 'pollutant', 'emission_volume', 'tax_rate']
+        fields = ['object_name', 'pollutant', 'emission_volume', 'tax_rate', 'tax_type']
+        labels = {
+            'object_name': "Назва об'єкта",
+            'pollutant': "Забруднююча речовина",
+            'emission_volume': "Об'єм викидів (тонн)",
+            'tax_rate': "Ставка податку (грн/тонна)",
+            'tax_type': "Тип податку",
+        }
+        widgets = {
+            'object_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Назва об'єкта"}),
+            'pollutant': forms.Select(attrs={'class': 'form-control'}),
+            'emission_volume': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Об'єм викидів (тонн)"}),
+            'tax_rate': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Ставка податку (грн/тонна)"}),
+            'tax_type': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 class RiskAssessmentForm(forms.ModelForm):
     class Meta:

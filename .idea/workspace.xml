@@ -4,25 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs">
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0028_environmentaldamage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0029_remove_environmentaldamage_pollutant_name_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eco/migrations/0030_remove_environmentaldamage_cr_coefficient_and_more.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bdbfac99-0f5c-4d5d-8e3d-8c866c74de4a.xml" afterDir="false" />
+    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.5. Need formulas, fixes with tables and more">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eco/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/damage_records.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
     </list>
     <list id="0eceb685-e6bb-4206-a95e-eb0a8a318db1" name="Changes by User" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/damage_calculations.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eco/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eco/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/damage_results.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/damage_results.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/pollutant_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pollutant_table.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/record_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/record_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/calculate_tax.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/calculate_tax.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/tax_results.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tax_results.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +49,21 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/eco/views.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/eco/models.py">
+      <ranges>
+        <range start1="0" end1="1" start2="0" end2="1" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="14" end1="32" start2="14" end2="14" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="51" end1="51" start2="33" end2="45" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="52" end1="52" start2="46" end2="54" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="53" end1="56" start2="55" end2="65" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="59" end1="59" start2="68" end2="93" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="60" end1="63" start2="94" end2="117" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="65" end1="65" start2="119" end2="124" changelist="0eceb685-e6bb-4206-a95e-eb0a8a318db1" />
+        <range start1="199" end1="199" start2="258" end2="260" changelist="95ad6b23-9386-483a-ba30-038b6b4f45b7" />
+      </ranges>
+    </file>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -145,7 +151,10 @@
       <workItem from="1734782394187" duration="1056000" />
       <workItem from="1734954369883" duration="9989000" />
       <workItem from="1735024539401" duration="3542000" />
-      <workItem from="1735110771633" duration="6960000" />
+      <workItem from="1735110771633" duration="8037000" />
+      <workItem from="1735251833934" duration="908000" />
+      <workItem from="1735289949838" duration="5602000" />
+      <workItem from="1735392496137" duration="4245000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -291,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735085719407</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Full project v1.5. Need formulas, fixes with tables and more">
+      <option name="closed" value="true" />
+      <created>1735126742713</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1735126742713</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,6 +362,7 @@
     <MESSAGE value="Full project v1.3. Lab 4, 5 need formulas and new tables" />
     <MESSAGE value="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
     <MESSAGE value="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs" />
+    <MESSAGE value="Full project v1.5. Need formulas, fixes with tables and more" />
+    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.5. Need formulas, fixes with tables and more" />
   </component>
 </project>
