@@ -16,21 +16,27 @@
                 <th>Об'єкт</th>
                 <th>Забруднююча речовина</th>
                 <th>Концентрація (мг/м³)</th>
+                <th>LADD (мг/(кг·день))</th>
+                <th>HQ</th>
+                <th>CR</th>
                 <th>Рівень ризику</th>
             </tr>
         </thead>
         <tbody>
             {% for assessment in assessments %}
-                <tr>
-                    <td>{{ assessment.object_name }}</td>
-                    <td>{{ assessment.pollutant.name }}</td>
-                    <td>{{ assessment.concentration }}</td>
-                    <td>{{ assessment.risk_level }}</td>
-                </tr>
+            <tr>
+                <td>{{ assessment.object_name }}</td>
+                <td>{{ assessment.pollutant.name }}</td>
+                <td>{{ assessment.concentration }}</td>
+                <td>{{ assessment.ladd|floatformat:3 }}</td> <!-- LADD -->
+                <td>{{ assessment.hq|floatformat:2 }}</td>   <!-- HQ -->
+                <td>{{ assessment.cr|floatformat:6 }}</td>   <!-- CR -->
+                <td>{{ assessment.risk_level }}</td>
+            </tr>
             {% empty %}
-                <tr>
-                    <td colspan="4">Немає результатів</td>
-                </tr>
+            <tr>
+                <td colspan="7">Немає результатів</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

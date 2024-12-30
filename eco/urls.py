@@ -8,7 +8,7 @@ urlpatterns = [
     path('create/', views.record_create, name='record_create'),
     path('edit/<int:pk>/', views.record_edit, name='record_edit'),
     path('delete/<int:pk>/', views.record_delete, name='record_delete'),
-    path('calculate-tax/', views.calculate_tax, name='calculate_tax'),
+    path('calculate-risk/', views.calculate_risk, name='calculate_risk'),
     path('add-emission/', views.add_emission_record, name='add_emission_record'),
     path('tax-results/', views.tax_results, name='tax_results'),
     path('assess-risk/', views.assess_risk, name='assess_risk'),
@@ -22,6 +22,9 @@ urlpatterns = [
     path('view-results/', views.view_results, name='view_results'),
     path('pollutants/', pollutant_table, name='pollutant_table'),
     path('pollutants/add/', views.pollutant_add, name='pollutant_add'),
+    path('calculate-tax/', views.calculate_tax, name='calculate_tax'),
+
+
 
 
 ]

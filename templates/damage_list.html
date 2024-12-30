@@ -1,45 +1,40 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таблиця збитків</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>Таблиця збитків під час надзвичайних ситуацій</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>№</th>
-                    <th>Підприємство</th>
-                    <th>Забруднююча речовина</th>
-                    <th>Рік</th>
-                    <th>Тип завданої шкоди</th>
-                    <th>Сума збитків</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for damage in damages %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ damage.object_name }}</td>
-                        <td>{{ damage.pollutant.name }}</td>
-                        <td>{{ damage.year }}</td>
-                        <td>{{ damage.get_damage_type_display }}</td>
-                        <td>{{ damage.damage_amount }}</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="6">Немає даних</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{% url 'add_damage_record' %}" class="btn btn-success">Додати новий запис</a>
-        <a href="{% url 'record_list' %}" class="btn">Назад до списку</a>
-    </div>
-</body>
-</html>
+
+{% block content %}
+<div class="container">
+    <h1>Список завданих збитків</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Назва об'єкта</th>
+                <th>Забруднююча речовина</th>
+                <th>Обсяг (М)</th>
+                <th>Регіональний коефіцієнт (К₃)</th>
+                <th>Коефіцієнт порушення (К₂)</th>
+                <th>Тип шкоди</th>
+                <th>Сума збитків (грн)</th>
+                <th>Рік</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ record.object_name }}</td>
+                <td>{{ record.pollutant.name }}</td>
+                <td>{{ record.emission_volume }}</td>
+                <td>{{ record.region_coefficient }}</td>
+                <td>{{ record.violation_characteristic }}</td>
+                <td>{{ record.get_damage_type_display }}</td>
+                <td>{{ record.damage_amount }}</td>
+                <td>{{ record.year }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">Записи відсутні</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

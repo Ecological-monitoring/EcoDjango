@@ -1,7 +1,7 @@
 from django import forms
 from .models import EmissionRecord
 from .models import TaxCalculation
-from .models import RiskAssessment
+from .models import HealthRiskAssessment
 from .models import DamageRecord
 from .models import EmergencyEvent
 from .models import PollutionRecord
@@ -35,35 +35,68 @@ class EmissionTaxForm(forms.ModelForm):
 
 
 
-class TaxCalculationForm(forms.ModelForm):
+
+class TaxCalculationForm(forms.Form):
+    DAMAGE_TYPE_CHOICES = [
+        ('Air', 'Викиди в атмосферу'),
+        ('Water', 'Скиди у водні об\'єкти'),
+        ('Soil', 'Розміщення відходів'),
+        ('Radioactive', 'Утворення радіоактивних відходів'),
+        ('Temporary', 'Тимчасове зберігання радіоактивних відходів'),
+    ]
+
+    object_name = forms.CharField(
+        max_length=255,
+        label="Назва об'єкта",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Введіть назву об'єкта"})
+    )
+    pollutant = forms.ModelChoiceField(
+        queryset=Pollutant.objects.all(),
+        label="Забруднююча речовина",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text="Виберіть забруднюючу речовину"
+    )
+    emission_volume = forms.FloatField(
+        label="Обсяг (тонни)",
+        required=True,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Введіть обсяг у тоннах"}),
+        help_text="Введіть обсяг викидів, скидів або відходів у тоннах"
+    )
+    damage_type = forms.ChoiceField(
+        choices=DAMAGE_TYPE_CHOICES,
+        label="Тип обрахунку",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text="Виберіть тип обрахунку"
+    )
+    additional_quarters = forms.IntegerField(
+        label="Кількість кварталів (для тимчасового зберігання)",
+        required=False,
+        initial=0,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Введіть кількість кварталів"}),
+        help_text="Застосовується лише для тимчасового зберігання радіоактивних відходів"
+    )
+from .models import HealthRiskAssessment
+
+from django import forms
+from .models import HealthRiskAssessment
+
+class HealthRiskForm(forms.ModelForm):
     class Meta:
-        model = TaxCalculation
-        fields = ['object_name', 'pollutant', 'emission_volume', 'tax_rate', 'tax_type']
+        model = HealthRiskAssessment
+        # Додаємо тільки поля, які мають бути введені вручну
+        fields = ['object_name', 'pollutant', 'concentration']
         labels = {
             'object_name': "Назва об'єкта",
             'pollutant': "Забруднююча речовина",
-            'emission_volume': "Об'єм викидів (тонн)",
-            'tax_rate': "Ставка податку (грн/тонна)",
-            'tax_type': "Тип податку",
+            'concentration': "Концентрація (мг/м³)",
         }
         widgets = {
-            'object_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Назва об'єкта"}),
+            'object_name': forms.TextInput(attrs={'class': 'form-control'}),
             'pollutant': forms.Select(attrs={'class': 'form-control'}),
-            'emission_volume': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Об'єм викидів (тонн)"}),
-            'tax_rate': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Ставка податку (грн/тонна)"}),
-            'tax_type': forms.Select(attrs={'class': 'form-control'}),
+            'concentration': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
         }
-
-class RiskAssessmentForm(forms.ModelForm):
-    class Meta:
-        model = RiskAssessment
-        fields = ['object_name', 'pollutant', 'concentration']
-        labels = {
-            'object_name': 'Назва об\'єкта',
-            'pollutant': 'Забруднююча речовина',
-            'concentration': 'Концентрація речовини, мг/м³'
-        }
-
 
 
 class DamageRecordForm(forms.ModelForm):

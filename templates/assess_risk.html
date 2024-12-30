@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оцінка ризику</title>
+    <!-- Підключення стилів -->
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 <div class="container">
     <h1>Оцінка ризику</h1>
+    <!-- Форма надсилається на маршрут 'assess_risk' -->
     <form method="POST" action="{% url 'assess_risk' %}">
-    {% csrf_token %}
+    {% csrf_token %} <!-- Захист від CSRF -->
+
     <label for="object_name">Назва об'єкта:</label>
     <input type="text" id="object_name" name="object_name" required>
 
@@ -27,8 +30,7 @@
     <input type="number" id="concentration" name="concentration" step="0.01" required>
 
     <button type="submit" class="btn btn-primary">Оцінити ризик</button>
-</form>
-
+    </form>
 </div>
 </body>
 </html>

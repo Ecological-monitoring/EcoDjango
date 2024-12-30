@@ -14,17 +14,41 @@
         <!-- Кнопки -->
         <div class="tools-section">
             <h2>Основний функціонал</h2>
-            <a href="{% url 'record_create' %}" class="btn btn-uniform">Додати новий запис</a>
+            <div class="tool-item">
+                <a href="{% url 'record_create' %}" class="btn btn-uniform">Додати новий запис</a>
 
+            </div>
+        </div>
+
+        <!-- Розрахунок податків і оцінка ризику здоров'я -->
+        <div class="tools-section">
             <h2>Розрахунок податків і оцінка ризику здоров'я</h2>
-            <a href="{% url 'pollutant_table' %}" class="btn btn-uniform">Оцінка ризику</a>
+            <div class="tool-item">
+                <a href="{% url 'calculate_tax' %}" class="btn btn-link">Перейти розрахунку податку</a>
+                <a href="{% url 'tax_results' %}" class="btn btn-secondary">Результати розрахунків</a>
+                <a href="{% url 'assess_risk' %}" class="btn btn-link">Перейти до оцінки ризику</a>
+                <a href="{% url 'risk_results' %}" class="btn btn-link">Результтати оцінки ризику</a>
 
+
+            </div>
+        </div>
+
+        <!-- Розрахунок збитків -->
+        <div class="tools-section">
             <h2>Розрахунок збитків</h2>
-            <a href="{% url 'damage_list' %}" class="btn btn-uniform">Розрахунок збитків</a>
+            <div class="tool-item">
+                <a href="{% url 'damage_calculations' %}" class="btn btn-uniform">Розрахунок збитків</a>
+                <a href="{% url 'damage_list' %}" class="btn btn-secondary">Список збитків</a>
+            </div>
+        </div>
 
+        <!-- Розрахунок шкоди -->
+        <div class="tools-section">
             <h2>Розрахунок шкоди</h2>
-            <!-- Нова кнопка -->
-            <a href="{% url 'damage_calculations' %}" class="btn btn-uniform">Розрахунок шкоди</a>
+            <div class="tool-item">
+                <a href="{% url 'damage_calculations' %}" class="btn btn-uniform">Розрахунок шкоди</a>
+                <a href="{% url 'damage_results' %}" class="btn btn-secondary">Результати розрахунків</a>
+            </div>
         </div>
 
         <!-- Пошук -->

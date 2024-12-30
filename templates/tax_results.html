@@ -7,43 +7,39 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>Результати розрахунків</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Назва об'єкта</th>
-                    <th>Забруднююча речовина</th>
-                    <th>Об'єм викидів (тонн)</th>
-                    <th>Ставка податку (грн/тонна)</th>
-                    <th>Тип податку</th>
-                    <th>Сума податку (грн)</th>
-                    <th>Дата розрахунку</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in calculations %}
-                <tr>
-                    <td>{{ record.object_name }}</td>
-                    <td>{{ record.pollutant.name }}</td>
-                    <td>{{ record.emission_volume }}</td>
-                    <td>{{ record.tax_rate }}</td>
-                    <td>{{ record.get_tax_type_display }}</td>
-                    <td>{{ record.tax_sum }}</td>
-                    <td>{{ record.calculation_date|date:"d.m.Y H:i" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7">Немає записів</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="buttons">
-            <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Новий розрахунок</a>
-            <a href="/" class="btn btn-secondary">На головну</a>
-        </div>
-    </div>
+<div class="container">
+    <h1>Результати розрахунків</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Назва об'єкта</th>
+            <th>Забруднююча речовина</th>
+            <th>Об'єм викидів (тонн)</th>
+            <th>Ставка податку (грн/тонна)</th>
+            <th>Тип податку</th>
+            <th>Сума податку (грн)</th>
+            <th>Дата розрахунку</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for record in calculations %}
+        <tr>
+            <td>{{ record.object_name }}</td>
+            <td>{{ record.pollutant.name }}</td>
+            <td>{{ record.emission_volume }}</td>
+            <td>{{ record.tax_rate }}</td>
+            <td>{{ record.get_tax_type_display }}</td>
+            <td>{{ record.tax_sum }}</td>
+            <td>{{ record.calculation_date }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">Немає записів</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'calculate_tax' %}" class="btn btn-primary">Новий розрахунок</a>
+</div>
 </body>
 </html>

@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 from datetime import datetime, timedelta
-from .models import EmissionRecord, TaxRate, Pollutant, RiskAssessment, TaxCalculation
-from .forms import EmissionTaxForm, TaxCalculationForm, RiskAssessmentForm
+from .models import EmissionRecord, TaxRate, Pollutant, HealthRiskAssessment, TaxCalculation
+from .forms import EmissionTaxForm, TaxCalculationForm, HealthRiskForm
 from .forms import DamageRecordForm
 from .models import DamageRecord
 from datetime import datetime
@@ -17,36 +17,79 @@ from .models import EnvironmentalDamage
 from .forms import EnvironmentalDamageForm
 import logging
 
-def tax_results(request):
-    """
-    Відображає результати останнього розрахунку та історію.
-    """
-    results = TaxCalculation.objects.all().order_by('-calculation_date')
-    latest = results.first()
-    history = results[1:]
-    return render(request, 'tax_results.html', {'latest': latest, 'history': history})
-
 
 def calculate_tax(request):
     if request.method == 'POST':
-        object_name = request.POST.get('object_name')
-        pollutant_name = request.POST.get('pollutant_name')
-        emission_volume = float(request.POST.get('emission_volume', 0))
-        tax_rate = float(request.POST.get('tax_rate', 0))
-        tax_sum = emission_volume * tax_rate
+        form = TaxCalculationForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            pollutant = data['pollutant']
+            emission_volume = data['emission_volume']
+            tax_type = data['damage_type']
 
-        # Збереження в базу даних
-        TaxCalculation.objects.create(
-            object_name=object_name,
-            pollutant_name=pollutant_name,
-            emission_volume=emission_volume,
-            tax_rate=tax_rate,
-            tax_sum=tax_sum
-        )
+            # Знаходження ставки податку
+            tax_rate = TaxRate.objects.filter(pollutant=pollutant.name).first()
+            if not tax_rate:
+                messages.error(request, "Ставка податку для вибраної речовини не знайдена.")
+                return redirect('calculate_tax')
 
-        return redirect('tax_results')  # Перехід до сторінки з результатами
+            tax_calculation = TaxCalculation(
+                object_name=data['object_name'],
+                pollutant=pollutant,
+                emission_volume=emission_volume,
+                tax_rate=tax_rate.rate,
+                tax_type=tax_type
+            )
+            tax_calculation.save()  # Зберігається і автоматично розраховується `tax_sum`
+            return redirect('tax_results')
+    else:
+        form = TaxCalculationForm()
+    return render(request, 'calculate_tax.html', {'form': form})
 
-    return render(request, 'calculate_tax.html')
+
+def tax_results(request):
+    calculations = TaxCalculation.objects.all().order_by('-calculation_date')
+    return render(request, 'tax_results.html', {'calculations': calculations})
+
+def calculate_risks(request):
+    if request.method == 'POST':
+        form = TaxCalculationForm(request.POST)
+        if form.is_valid():
+            pollutant = form.cleaned_data['pollutant']
+            emission_volume = form.cleaned_data['emission_volume']
+            damage_type = form.cleaned_data['damage_type']
+            additional_quarters = form.cleaned_data['additional_quarters'] or 0
+
+            tax_rate = TaxRate.objects.filter(pollutant=pollutant).first()
+
+            if not tax_rate:
+                result = "Ставка податку для вибраної забруднюючої речовини не знайдена."
+            else:
+                tax_sum = 0
+
+                if damage_type == 'Air':
+                    tax_sum = emission_volume * tax_rate.rate
+                elif damage_type == 'Water':
+                    kos = 1.5
+                    tax_sum = emission_volume * tax_rate.rate * kos
+                elif damage_type == 'Soil':
+                    ko = 3.0
+                    tax_sum = emission_volume * tax_rate.rate * ko
+                elif damage_type == 'Radioactive':
+                    r_ns, S1_ns, V1_ns = 0.8, 500, emission_volume * 0.6
+                    r_v, S1_v, V1_v = 1.2, 700, emission_volume * 0.4
+                    tax_sum = (r_ns * S1_ns * V1_ns) + (r_v * S1_v * V1_v)
+                elif damage_type == 'Temporary':
+                    tax_sum = tax_rate.rate * emission_volume * additional_quarters
+
+                result = f"Сума податку: {tax_sum:.2f} грн"
+
+            return render(request, 'tax_results.html', {'result': result})
+    else:
+        form = TaxCalculationForm()
+
+    return render(request, 'calculate_tax.html', {'form': form})
+
 def add_emission_record(request):
     if request.method == 'POST':
         form = EmissionTaxForm(request.POST)
@@ -114,19 +157,13 @@ def assess_risk(request):
 
         pollutant = get_object_or_404(Pollutant, id=pollutant_id)
 
-        if concentration > 10:
-            risk_level = "High"
-        elif concentration > 5:
-            risk_level = "Medium"
-        else:
-            risk_level = "Low"
-
-        RiskAssessment.objects.create(
+        # Створюємо оцінку ризику
+        assessment = HealthRiskAssessment(
             object_name=object_name,
             pollutant=pollutant,
-            concentration=concentration,
-            risk_level=risk_level
+            concentration=concentration
         )
+        assessment.save()  # Викликає всі обчислення: LADD, HQ, CR та рівень ризику
 
         return redirect('risk_results')
 
@@ -134,7 +171,7 @@ def assess_risk(request):
     return render(request, 'assess_risk.html', {'pollutants': pollutants})
 
 def risk_results(request):
-    assessments = RiskAssessment.objects.all()
+    assessments = HealthRiskAssessment.objects.all()
     return render(request, 'risk_results.html', {'assessments': assessments})
 
 def calculate_risk(concentration):

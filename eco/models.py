@@ -1,7 +1,7 @@
 
 
 from django.db import models
-
+import logging
 class Pollutant(models.Model):
     name = models.CharField(max_length=100, help_text="Назва забруднюючої речовини")
     description = models.TextField(blank=True, null=True, help_text="Опис забруднюючої речовини")
@@ -93,11 +93,11 @@ class TaxCalculation(models.Model):
 
     def save(self, *args, **kwargs):
         if self.tax_type == 'air' and self.emission_volume and self.tax_rate:
-            self.tax_sum = self.calculate_air_tax([(self.emission_volume, self.tax_rate)])
+            self.tax_sum = self.emission_volume * self.tax_rate
         elif self.tax_type == 'water' and self.emission_volume and self.tax_rate:
-            self.tax_sum = self.calculate_water_tax([(self.emission_volume, self.tax_rate)], k_os=1.5)
+            self.tax_sum = self.emission_volume * self.tax_rate * 1.5
         elif self.tax_type == 'waste' and self.emission_volume and self.tax_rate:
-            self.tax_sum = self.calculate_waste_tax([(self.emission_volume, self.tax_rate)], k_t=1.2, k_o=3)
+            self.tax_sum = self.emission_volume * self.tax_rate * 1.2 * 3
         elif self.tax_type == 'radioactive':
             coefficients = {
                 'r_ns': 0.8,
@@ -113,8 +113,7 @@ class TaxCalculation(models.Model):
             }
             self.tax_sum = self.calculate_radioactive_waste_tax(self.emission_volume, self.tax_rate, coefficients)
         elif self.tax_type == 'temporary':
-            self.tax_sum = self.calculate_temporary_storage_tax(self.tax_rate, self.emission_volume, T=3)
-
+            self.tax_sum = self.tax_rate * self.emission_volume * 3  # Приклад формули
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -131,33 +130,79 @@ class EmissionRecord(models.Model):
     def __str__(self):
         return f"{self.object_name} - {self.pollutant.name} - {self.date}"
 
-class RiskAssessment(models.Model):
+logger = logging.getLogger(__name__)
+
+class HealthRiskAssessment(models.Model):
     object_name = models.CharField(max_length=100, help_text="Назва об'єкта")
     pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, help_text="Забруднююча речовина")
     concentration = models.FloatField(help_text="Концентрація речовини, мг/м³")
     risk_level = models.CharField(max_length=100, blank=True, help_text="Рівень ризику")
+    hq = models.FloatField(blank=True, null=True, help_text="Hazard Quotient (HQ)")
+    cr = models.FloatField(blank=True, null=True, help_text="Cancer Risk (CR)")
+    ladd = models.FloatField(blank=True, null=True, help_text="Lifetime Average Daily Dose (LADD), мг/(кг·день)")
     date = models.DateField(auto_now_add=True, help_text="Дата оцінки")
 
+    def calculate_ladd(self, intake_rate, exposure_frequency, exposure_duration, body_weight, averaging_time):
+        """
+        Розрахунок LADD (Lifetime Average Daily Dose) за формулою:
+        LADD = (C × IR × EF × ED) / (BW × AT),
+        де:
+        C - концентрація речовини, мг/м³;
+        IR - швидкість вдихання (наприклад, м³/день);
+        EF - частота впливу (днів/рік);
+        ED - тривалість впливу (років);
+        BW - маса тіла (кг);
+        AT - час усереднення (днів).
+        """
+        self.ladd = (self.concentration * intake_rate * exposure_frequency * exposure_duration) / (body_weight * averaging_time)
 
-    def calculate_risk(self):
-        """Обчислення ризику на основі методики"""
-        # Додайте тут логіку оцінки ризику відповідно до методики
-        if self.concentration > 1.0:  # Замініть 1.0 на ваші реальні порогові значення
+    def calculate_hq(self):
+        pollutant_details = PollutantDetails.objects.filter(name=self.pollutant.name).first()
+        if pollutant_details:
+            self.hq = self.concentration / (pollutant_details.rfc or 1)  # Уникаємо ділення на 0
+        else:
+            self.hq = 0
+            logger.warning(f"RFC для {self.pollutant.name} не знайдено!")
+
+    def calculate_cr(self):
+        pollutant_details = PollutantDetails.objects.filter(name=self.pollutant.name).first()
+        if pollutant_details:
+            self.cr = self.concentration * (pollutant_details.sf or 0) * 1e-6
+        else:
+            self.cr = 0
+            logger.warning(f"SF для {self.pollutant.name} не знайдено!")
+
+    def determine_risk_level(self):
+        """Визначення рівня ризику на основі HQ та CR."""
+        if self.hq > 1 or self.cr > 1e-4:
             self.risk_level = "Високий"
+        elif 0.1 < self.hq <= 1 or 1e-6 < self.cr <= 1e-4:
+            self.risk_level = "Середній"
         else:
             self.risk_level = "Низький"
-        return self.risk_level
 
     def save(self, *args, **kwargs):
-        self.calculate_risk()
+        intake_rate = 20  # Швидкість вдихання, м³/день
+        exposure_frequency = 350  # Частота впливу, днів/рік
+        exposure_duration = 30  # Тривалість впливу, років
+        body_weight = 70  # Маса тіла, кг
+        averaging_time = 70 * 365  # Час усереднення, днів (70 років)
+
+        self.calculate_ladd(intake_rate, exposure_frequency, exposure_duration, body_weight, averaging_time)
+        self.calculate_hq()
+        self.calculate_cr()
+        self.determine_risk_level()
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.object_name} - {self.pollutant.name} ({self.date})"
 
 
 class DamageRecord(models.Model):
     object_name = models.CharField(max_length=255, verbose_name="Назва об'єкта")
     pollutant = models.ForeignKey(Pollutant, on_delete=models.CASCADE, verbose_name="Забруднююча речовина")
-    emission_volume = models.FloatField(verbose_name="Обсяг викидів, скидів або розміщених відходів (М)", null=False, default=0.0)
+    emission_volume = models.FloatField(verbose_name="Обсяг викидів, скидів або розміщених відходів (М)", null=False,
+                                        default=0.0)
     region_coefficient = models.FloatField(verbose_name="Регіональний коефіцієнт (К₃)", default=1.0)
     violation_characteristic = models.FloatField(verbose_name="Коефіцієнт характеру порушення (К₂)", default=1.0)
     year = models.IntegerField(verbose_name="Рік")
@@ -167,35 +212,60 @@ class DamageRecord(models.Model):
             ('Air', 'Викиди в атмосферу'),
             ('Water', 'Скиди у водні об’єкти'),
             ('Soil', 'Забруднення ґрунту'),
+            ('Radioactive', 'Радіоактивні відходи'),
+            ('Temporary', 'Тимчасове зберігання відходів'),
         ],
         verbose_name="Тип завданої шкоди"
     )
-    damage_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сума збитків", null=True, blank=True)
+    damage_amount = models.DecimalField(max_digits=15, decimal_places=2, verbose_name="Сума збитків (грн)", null=True,
+                                        blank=True)
 
     def calculate_damage(self):
-        if not self.pollutant or not self.emission_volume:
+        # Retrieve the tax rate for the pollutant
+        tax_rate = TaxRate.objects.filter(pollutant=self.pollutant.name).first()
+        if not tax_rate:
             self.damage_amount = 0
             return
 
-        base_damage = (
-            self.emission_volume *
-            self.pollutant.tax_rate *
-            self.pollutant.hazard_coefficient *
-            self.violation_characteristic *
-            self.region_coefficient
-        )
+        base_damage = self.emission_volume * tax_rate.rate * self.region_coefficient * self.violation_characteristic
 
+        # Logic for specific damage types
         if self.damage_type == 'Air':
-            # Додаткові розрахунки для викидів в атмосферу (якщо потрібні)
             self.damage_amount = base_damage
         elif self.damage_type == 'Water':
-            # Додаткові коефіцієнти для водних об’єктів
-            water_coefficient = 1.5  # Приклад значення
-            self.damage_amount = base_damage * water_coefficient
+            kos = 1.5  # Example coefficient for lakes or ponds
+            self.damage_amount = base_damage * kos
         elif self.damage_type == 'Soil':
-            # Додаткові коефіцієнти для ґрунту
-            soil_coefficient = 1.2  # Приклад значення
-            self.damage_amount = base_damage * soil_coefficient
+            ko = 3.0  # Example coefficient for unmanaged waste
+            self.damage_amount = base_damage * ko
+        elif self.damage_type == 'Radioactive':
+            # Coefficients and values for radioactive waste
+            coefficients = {
+                'r_ns': 0.8,
+                'S1_ns': 500,
+                'V1_ns': 10,
+                'r_v': 1.2,
+                'S1_v': 700,
+                'V1_v': 5,
+                'S2_ns': 300,
+                'V2_ns': 20,
+                'S2_v': 600,
+                'V2_v': 8
+            }
+            on = self.emission_volume
+            n = tax_rate.rate
+            part1 = on * n
+            part2 = coefficients['r_ns'] * coefficients['S1_ns'] * coefficients['V1_ns'] + \
+                    coefficients['r_v'] * coefficients['S1_v'] * coefficients['V1_v']
+            part3 = (1 / 32) * (
+                    coefficients['r_ns'] * coefficients['S2_ns'] * coefficients['V2_ns'] +
+                    coefficients['r_v'] * coefficients['S2_v'] * coefficients['V2_v']
+            )
+            self.damage_amount = part1 + part2 + part3
+        elif self.damage_type == 'Temporary':
+            # Logic for temporary storage of radioactive waste
+            t_storage = 3  # Example quarters of storage beyond the license
+            self.damage_amount = tax_rate.rate * self.emission_volume * t_storage
         else:
             self.damage_amount = base_damage
 
@@ -205,23 +275,6 @@ class DamageRecord(models.Model):
 
     def __str__(self):
         return f"{self.object_name} ({self.year})"
-
-# Додаткова функція для розрахунку сумарного збитку
-def calculate_total_damage():
-    total_damage = 0
-    records = DamageRecord.objects.all()
-    for record in records:
-        total_damage += float(record.damage_amount or 0)
-    return total_damage
-
-# Додаткова функція для розрахунку сумарного збитку
-def calculate_total_damage():
-    total_damage = 0
-    records = DamageRecord.objects.all()
-    for record in records:
-        total_damage += float(record.damage_amount or 0)
-    return total_damage
-
 
 
 class EmergencyEvent(models.Model):

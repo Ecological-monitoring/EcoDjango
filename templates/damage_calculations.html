@@ -1,19 +1,44 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>Розрахунок збитків</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>Додати новий розрахунок</h1>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success">Додати інформацію</button>
-        </form>
-    </div>
-</body>
-</html>
+
+{% block content %}
+<div class="container">
+    <h1>Розрахунок завданої шкоди</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="object_name">Назва об'єкта</label>
+            <input type="text" name="object_name" id="object_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="pollutant">Забруднююча речовина</label>
+            <select name="pollutant" id="pollutant" class="form-control" required>
+                {% for pollutant in pollutants %}
+                <option value="{{ pollutant.id }}">{{ pollutant.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="emission_volume">Обсяг викидів, скидів або розміщених відходів (М)</label>
+            <input type="number" step="0.01" name="emission_volume" id="emission_volume" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="region_coefficient">Регіональний коефіцієнт (К₃)</label>
+            <input type="number" step="0.01" name="region_coefficient" id="region_coefficient" class="form-control" value="1.0" required>
+        </div>
+        <div class="form-group">
+            <label for="violation_characteristic">Коефіцієнт характеру порушення (К₂)</label>
+            <input type="number" step="0.01" name="violation_characteristic" id="violation_characteristic" class="form-control" value="1.0" required>
+        </div>
+        <div class="form-group">
+            <label for="damage_type">Тип завданої шкоди</label>
+            <select name="damage_type" id="damage_type" class="form-control" required>
+                <option value="Air">Викиди в атмосферу</option>
+                <option value="Water">Скиди у водні об'єкти</option>
+                <option value="Soil">Забруднення ґрунту</option>
+                <option value="Radioactive">Радіоактивні відходи</option>
+                <option value="Temporary">Тимчасове зберігання відходів</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Розрахувати</button>
+    </form>
+</div>
+{% endblock %}

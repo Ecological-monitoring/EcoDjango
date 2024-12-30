@@ -25,5 +25,13 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="db [2]" uuid="381b3b3d-0987-4f3b-ac34-20ab8db4481c">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="SQLITE">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+      <auth-provider>no-auth</auth-provider>
+      <schema-mapping />
+    </data-source>
   </component>
 </project>
