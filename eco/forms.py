@@ -35,14 +35,13 @@ class EmissionTaxForm(forms.ModelForm):
 
 
 
-
 class TaxCalculationForm(forms.Form):
-    DAMAGE_TYPE_CHOICES = [
-        ('Air', 'Викиди в атмосферу'),
-        ('Water', 'Скиди у водні об\'єкти'),
-        ('Soil', 'Розміщення відходів'),
-        ('Radioactive', 'Утворення радіоактивних відходів'),
-        ('Temporary', 'Тимчасове зберігання радіоактивних відходів'),
+    TAX_TYPE_CHOICES = [
+        ('air', 'Викиди в атмосферу'),
+        ('water', 'Скиди у водні об’єкти'),
+        ('waste', 'Розміщення відходів'),
+        ('radioactive', 'Утворення радіоактивних відходів'),
+        ('temporary', 'Тимчасове зберігання радіоактивних відходів'),
     ]
 
     object_name = forms.CharField(
@@ -63,8 +62,8 @@ class TaxCalculationForm(forms.Form):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Введіть обсяг у тоннах"}),
         help_text="Введіть обсяг викидів, скидів або відходів у тоннах"
     )
-    damage_type = forms.ChoiceField(
-        choices=DAMAGE_TYPE_CHOICES,
+    tax_type = forms.ChoiceField(
+        choices=TAX_TYPE_CHOICES,
         label="Тип обрахунку",
         required=True,
         widget=forms.Select(attrs={'class': 'form-control'}),
@@ -77,6 +76,7 @@ class TaxCalculationForm(forms.Form):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Введіть кількість кварталів"}),
         help_text="Застосовується лише для тимчасового зберігання радіоактивних відходів"
     )
+
 from .models import HealthRiskAssessment
 
 from django import forms

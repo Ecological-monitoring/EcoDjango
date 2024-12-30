@@ -92,6 +92,7 @@ class TaxCalculation(models.Model):
         return N * V * T
 
     def save(self, *args, **kwargs):
+        print(f"Обчислення податку для {self.object_name} ({self.tax_type})")
         if self.tax_type == 'air' and self.emission_volume and self.tax_rate:
             self.tax_sum = self.emission_volume * self.tax_rate
         elif self.tax_type == 'water' and self.emission_volume and self.tax_rate:
@@ -113,7 +114,10 @@ class TaxCalculation(models.Model):
             }
             self.tax_sum = self.calculate_radioactive_waste_tax(self.emission_volume, self.tax_rate, coefficients)
         elif self.tax_type == 'temporary':
-            self.tax_sum = self.tax_rate * self.emission_volume * 3  # Приклад формули
+            self.tax_sum = self.tax_rate * self.emission_volume * 3
+        else:
+            print("Недостатньо даних для обчислення податку!")
+        print(f"Сума податку: {self.tax_sum}")
         super().save(*args, **kwargs)
 
     def __str__(self):

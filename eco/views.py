@@ -17,6 +17,8 @@ from .models import EnvironmentalDamage
 from .forms import EnvironmentalDamageForm
 import logging
 
+from .models import TaxCalculation, TaxRate
+
 
 def calculate_tax(request):
     if request.method == 'POST':
@@ -24,11 +26,8 @@ def calculate_tax(request):
         if form.is_valid():
             data = form.cleaned_data
             pollutant = data['pollutant']
-            emission_volume = data['emission_volume']
-            tax_type = data['damage_type']
-
-            # Знаходження ставки податку
             tax_rate = TaxRate.objects.filter(pollutant=pollutant.name).first()
+
             if not tax_rate:
                 messages.error(request, "Ставка податку для вибраної речовини не знайдена.")
                 return redirect('calculate_tax')
@@ -36,17 +35,15 @@ def calculate_tax(request):
             tax_calculation = TaxCalculation(
                 object_name=data['object_name'],
                 pollutant=pollutant,
-                emission_volume=emission_volume,
+                emission_volume=data['emission_volume'],
                 tax_rate=tax_rate.rate,
-                tax_type=tax_type
+                tax_type=data['tax_type']  # Використовуйте tax_type
             )
-            tax_calculation.save()  # Зберігається і автоматично розраховується `tax_sum`
+            tax_calculation.save()
             return redirect('tax_results')
     else:
         form = TaxCalculationForm()
     return render(request, 'calculate_tax.html', {'form': form})
-
-
 def tax_results(request):
     calculations = TaxCalculation.objects.all().order_by('-calculation_date')
     return render(request, 'tax_results.html', {'calculations': calculations})
