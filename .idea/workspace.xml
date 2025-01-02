@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.5. Need formulas, fixes with tables and more">
-      <change beforePath="$PROJECT_DIR$/.idea/EcoDjango.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EcoDjango.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/381b3b3d-0987-4f3b-ac34-20ab8db4481c.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/381b3b3d-0987-4f3b-ac34-20ab8db4481c.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/77612e98-a92c-4c7f-89ca-892335aaa21a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/77612e98-a92c-4c7f-89ca-892335aaa21a.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
+    <list default="true" id="95ad6b23-9386-483a-ba30-038b6b4f45b7" name="Changes" comment="Full project v1.1. Lab 2 done + fulfilled">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eco/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/eco/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/risk_results.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/risk_results.html" afterDir="false" />
     </list>
     <list id="0eceb685-e6bb-4206-a95e-eb0a8a318db1" name="Changes by User" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +141,7 @@
       <workItem from="1735251833934" duration="908000" />
       <workItem from="1735289949838" duration="5602000" />
       <workItem from="1735392496137" duration="4245000" />
-      <workItem from="1735818084128" duration="1490000" />
+      <workItem from="1735818084128" duration="3930000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -299,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735126742713</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Full project v1.1. Lab 2 done + fulfilled">
+      <option name="closed" value="true" />
+      <created>1735819647497</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1735819647497</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,6 +358,7 @@
     <MESSAGE value="Full project v1.1. Lab 1 need fix, Lab 2 need formula, Lab 3-5 need formulas and fixed tables" />
     <MESSAGE value="Full project v1.4. Lab 5 need formulas and new tables, add delete buttons to 2-5 Labs, fill data 2-5 Labs" />
     <MESSAGE value="Full project v1.5. Need formulas, fixes with tables and more" />
-    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.5. Need formulas, fixes with tables and more" />
+    <MESSAGE value="Full project v1.1. Lab 2 done + fulfilled" />
+    <option name="LAST_COMMIT_MESSAGE" value="Full project v1.1. Lab 2 done + fulfilled" />
   </component>
 </project>

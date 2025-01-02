@@ -171,7 +171,7 @@ class HealthRiskAssessment(models.Model):
     def calculate_cr(self):
         pollutant_details = PollutantDetails.objects.filter(name=self.pollutant.name).first()
         if pollutant_details:
-            self.cr = self.concentration * (pollutant_details.sf or 0) * 1e-6
+            self.cr = self.concentration * (pollutant_details.sf or 0)
         else:
             self.cr = 0
             logger.warning(f"SF для {self.pollutant.name} не знайдено!")
